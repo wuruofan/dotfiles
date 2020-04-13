@@ -11,8 +11,6 @@
 # ====================================================
 
 PWD=`pwd`
-echo $PWD
-
 
 if [ -f ~/.vimrc ]; then
     mv ~/.vimrc ~/.vimrc.orig
@@ -23,11 +21,14 @@ if [ -f ~/.zshrc ]; then
     mv ~/.zshrc ~/.zshrc.orig
 fi
 
-ln -s $PWD/_vimrc ~/.vimrc
-ln -s $PWD/_vimrc.bundles ~/.vimrc.bundles
+ln -sf $PWD/vim/_vimrc ~/.vimrc
+mkdir -p ~/.vim/
+ln -sf $PWD/vim/plugins.vim ~/.vim/plugins.vim
+mkdir -p ~/.config/nvim/
+ln -sf $PWD/vim/nvim/init.vim ~/.config/nvim/
 
-ln -s $PWD/_git-completion.bash ~/.git-completion.bash
-ln -s $PWD/_gitconfig ~/.gitconfig
+ln -sf $PWD/git/_git-completion.bash ~/.git-completion.bash
+ln -sf $PWD/git/_gitconfig ~/.gitconfig
 
-ln -s $PWD/_zshrc ~/.zshrc
-ln -s $PWD/agnoster-rfw.zsh-theme ~/.oh-my-zsh/custom/themes/
+ln -sf $PWD/zsh/_zshrc ~/.zshrc
+ln -sf $PWD/zsh/agnoster-rfw.zsh-theme ~/.oh-my-zsh/custom/themes/

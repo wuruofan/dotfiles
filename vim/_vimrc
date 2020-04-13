@@ -5,7 +5,7 @@ set nocompatible
 let $VIMHOME = expand("$HOME/.vim")
 let $BUNDLE = expand("$VIMHOME/bundle")
 if has("nvim")
-  let $VIMPLUG = expand("~/.config/nvim/autoload/plug.vim")
+  let $VIMPLUG = expand("~/.local/share/nvim/site/autoload/plug.vim")
 else
   let $VIMPLUG = expand("$VIMHOME/autoload/plug.vim")
 endif

@@ -1,0 +1,83 @@
+if &compatible
+  set nocompatible
+end
+
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+"" Define bundles via Github repos
+"vim环境下运行交互命令
+Bundle 'christoomey/vim-run-interactive'
+
+" 代码补全
+Bundle 'Valloric/YouCompleteMe'
+" 快捷键打开Quickfix/LocationList
+Plugin 'Valloric/ListToggle'
+" 语法检查, ycm已自带
+"Bundle 'scrooloose/syntastic'
+
+" ctags标签插件
+Bundle 'vim-scripts/ctags.vim'
+" tags导航栏
+Bundle 'majutsushi/tagbar'
+" 文件管理插件
+Bundle 'scrooloose/nerdtree'
+
+" 状态栏git分支提示
+Bundle 'tpope/vim-fugitive'
+" 状态栏插件
+Bundle 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+" 万能跳转
+"Bundle 'kien/ctrlp.vim'
+Bundle 'ctrlpvim/ctrlp.vim'
+" 模糊搜索当前文件中所有函数
+Bundle 'tacahiroy/ctrlp-funky'
+
+" 自动创建不存在的路径文件夹
+Bundle 'pbrisbin/vim-mkdir'
+" 重命名buffer中文件名
+Bundle 'danro/rename.vim'
+" html标签成对跳转
+Bundle 'vim-scripts/matchit.zip'
+" C头文件成对切换
+Bundle 'vim-scripts/a.vim'
+" 自动补全括号、引号
+Bundle 'Raimondi/delimitMate'
+" 快速跳转
+Bundle 'Lokaltog/vim-easymotion'
+
+" 对齐插件
+Bundle 'godlygeek/tabular'
+" 多行编辑插件
+Bundle 'terryma/vim-multiple-cursors'
+" 注释插件
+"Bundle 'vim-scripts/tComment'
+Plugin 'scrooloose/nerdcommenter'
+
+" 代码模版
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+
+" 语法高亮
+"Bundle "evanmiller/nginx-vim-syntax"
+"Bundle "jelera/vim-javascript-syntax"
+
+" VIM配色方案
+Bundle "tomasr/molokai"
+Bundle "altercation/vim-colors-solarized"
+Bundle 'croaky/vim-colors-github'
+
+" 自动格式化插件
+Plugin 'Chiel92/vim-autoformat'
+
+if filereadable(expand("~/.vimrc.bundles.local"))
+  source ~/.vimrc.bundles.local
+endif
+
+filetype on

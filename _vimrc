@@ -1,0 +1,759 @@
+" Use Vim settings, rather then Vi settings. This setting must be as early as
+" possible, as it has side effects.
+set nocompatible
+
+let $VIMHOME = expand("$HOME/.vim")
+let $BUNDLE = expand("$VIMHOME/bundle")
+let $VIMPLUG = expand("$VIMHOME/autoload/plug.vim")
+
+if empty(glob(expand($VIMPLUG)))
+  silent !curl -fLo $VIMPLUG --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source ~/.vimrc
+endif
+source $VIMPLUG
+
+if filereadable(expand("$VIMHOME/plugins.vim"))
+    source $VIMHOME/plugins.vim
+endif
+
+"if filereadable(expand("~/.vimrc.bundles"))
+"  source ~/.vimrc.bundles
+" endif
+
+" Local config
+if filereadable($HOME . "/.vimrc.local")
+  source ~/.vimrc.local
+endif
+
+
+" Highlight current line
+au WinLeave * set nocursorline nocursorcolumn
+au WinEnter * set cursorline cursorcolumn
+set cursorline cursorcolumn
+
+" Use option key as ALT in MacVIM
+if has("macvim")
+    set macmeta
+endif
+
+" Color scheme
+if has("nvim")
+    set termguicolors " True Color
+    colo onedark
+    let g:airline_theme="onedark"
+else
+    set t_Co=256      " Set terminal color support 256 bit
+    highlight NonText guibg=#060606
+    highlight Folded  guibg=#0A0A0A guifg=#9090D0
+
+    colo onedark
+    let g:airline_theme="onedark"
+endif
+
+set backspace=2   " Backspace deletes like most programs in insert mode
+set history=50
+set ruler         " show the cursor position all the time
+set showcmd       " display incomplete commands
+set laststatus=2  " Always display the status line
+set autowrite     " Automatically :write before running commands
+set confirm       " Need confrimation while exit
+
+" 设置备份文件
+"set nobackup
+"set nowritebackup
+"set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
+" 设置撤销文件
+set undofile
+"设置undofile所在目录
+set undodir=$TEMP,/tmp,.
+"set undodir=$TEMP,~/.vim/tmp,/tmp,.
+"设置swp文件所在目录: $TEMP和当前文件夹下
+set directory=$TEMP,/tmp,.
+
+" Search results high light
+set hlsearch
+"设置搜索时忽略大小写ic, 高亮搜索hls, 增量搜索is
+set ic is
+
+
+" 设置编码
+"vim默认显示编码, 打开的文件编码与该属性配置的编码不同, 那么Vim会将编码自动转换到配置编码再显示
+set encoding=utf-8
+"编码列表, Vim在读取文件的时候, 会根据这里的编码自动检测, 如果检测失败则尝试下一个
+"chinese是别名, 在 Unix 里表示 gb2312，在Windows 里表示cp936
+set fileencodings=ucs-bom,utf-8,chinese,gb18030,gbk,big5
+
+"新建文件和保存文件时文件的编码
+if has("win32")
+    set fileencoding=chinese
+else
+    set fileencoding=utf-8
+endif
+"输出到客户终端(Term)采用的编码类型
+"set termencoding=chinese "may cause font display in error code!!!
+
+"设置文件格式
+set fileformats=unix,dos
+
+set mouse=a
+
+set clipboard+=unnamedplus
+
+""设置GUI参数
+"设置不显示菜单栏
+"set guioptions-=m
+"设置不显示工具栏
+"set guioptions-=T
+"设置不显示竖直滚动栏
+"set guioptions-=r
+
+""设置source命令读取文件中的命令
+"source $VIMRUNTIME/delmenu.vim
+"source $VIMRUNTIME/menu.vim
+"source $VIMRUNTIME/vimrc_example.vim
+"source $VIMRUNTIME/mswin.vim
+"设置使用Windows中Ctrl-X, Ctrl-C, Ctrl-V快捷键
+"behave mswin
+
+"设置gui字体
+if has("gui_running")
+    if has("gui_gtk2") || has("gui_gtk3")
+        "set guifont=Hack\ 12
+        set guifont=YaHei\ Consolas\ Hybrid\ 12
+        "set guifont=Noto\ Mono\ for\ Powerline\ 12
+        "set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
+    endif
+
+    if has("mac")
+        set guifont=Fira\ Mono:h15
+    endif
+endif
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+endif
+
+filetype plugin indent on
+"设置使用C语言式缩进
+set cindent
+"设置下一行自动缩进
+set autoindent
+"设置下一行智能缩进, 和cindent冲突
+set smartindent
+
+" Make it obvious where 80 characters is
+set textwidth=80
+set colorcolumn=+1
+
+" Numbers
+set number
+set numberwidth=5
+set rnu
+
+"设置换行
+set wrap
+"设置换行时h和l键能移动到上一行/下一行
+set whichwrap+=h,l
+
+"设置显示当前模式
+set showmode
+"设置匹配模式，类似当输入一个左括号时会匹配相应的那个右括号
+set showmatch
+set matchpairs+=<:>
+
+set statusline+=%{fugitive#statusline()} "  Git Hotness
+
+" Display extra whitespace
+set list listchars=tab:»·,trail:·
+
+" Softtabs, 4 spaces
+set tabstop=4
+set shiftwidth=4
+set shiftround
+set expandtab
+"设置智能TAB, shiftwidth只用于左右缩进
+set smarttab
+
+" Tab completion
+" will insert tab at beginning of line,
+" will use completion if not at beginning
+" set wil" dmode=list:longest,list:full
+" function! InsertTabWrapper()
+    " let col = col('.') - 1
+    " if !col || getline('.')[col - 1] !~ '\k'
+        " return "\<tab>"
+    " else
+        " return "\<c-n>"
+    " endif
+" endfunction
+" inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+" inoremap <S-Tab> <c-p>
+
+" Leader
+"let mapleader = ","
+
+
+" Add author info
+function s:add_author_info()
+    let n=1
+    while n < 8
+        let line = getline(n)
+        if line =~'^\s*\*\s*\S*Last\s*modified\s*:\s*\S*.*'
+            call <SID>update_author_info()
+            return
+        endif
+        let n = n + 1
+    endwhile
+    call <SID>add_title()
+endfunction
+
+function s:update_author_info()
+    normal m'
+    execute '/* Last modified\s*:/s@:.*$@\=strftime(": %Y-%m-%d %H:%M")@'
+    normal "
+    normal mk
+    execute '/* Filename\s*:/s@:.*$@\=": ".expand("%:t")@'
+    execute "noh"
+    normal 'k
+    echohl WarningMsg | echo "Successful in updating the copy right." | echohl None
+endfunction
+
+function s:add_title()
+    call append(0,"/**********************************************************")
+    call append(1," * Author        : rf.w")
+    call append(2," * Email         : demonsimon#gmail.com")
+    call append(3," * Last modified : ".strftime("%Y-%m-%d %H:%M"))
+    call append(4," * Filename      : ".expand("%:t"))
+    call append(5," * Description   : ")
+    call append(6," * *******************************************************/")
+    echohl WarningMsg | echo "Successful in adding the copyright." | echohl None
+endfunction
+
+nmap <leader>au :call <SID>add_author_info()<CR>'s
+
+let g:file_copyright_name = "rf.w"
+let g:file_copyright_email = "demonsimon#gmail.com"
+
+"打开文件时自动跳转到上次编辑位置
+augroup vimrcEx
+let g:header_field_author_email = 'demonsimon#gmail.com'
+  autocmd!
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it for commit messages, when the position is invalid, or when
+  " inside an event handler (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  " Cucumber navigation commands
+  "autocmd User Rails Rnavcommand step features/step_definitions -glob=**/* -suffix=_steps.rb
+  "autocmd User Rails Rnavcommand config config -glob=**/* -suffix=.rb -default=routes
+
+  " Set syntax highlighting for specific file types
+  autocmd BufRead,BufNewFile Appraisals set filetype=ruby
+  autocmd BufRead,BufNewFile *.md set filetype=markdown
+
+  " Enable spellchecking for Markdown
+  autocmd FileType markdown setlocal spell
+
+  " Automatically wrap at 80 characters for Markdown
+  autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+augroup END
+
+
+" Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline#extensions#tabline#buffers_label = 'B'
+let g:airline#extensions#tabline#tabs_label = 'T'
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#buffer_nr_show = 0
+let g:airline#extensions#tabline#fnamemod = ':p:~:.'
+let g:airline#extensions#tabline#fnametruncate = 16
+let g:airline#extensions#tabline#fnamecollapse = 2
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#ycm#enabled = 1
+let g:airline#extensions#ycm#error_symbol = 'E:'
+let g:airline#extensions#ycm#warning_symbol = 'W:'
+
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" powerline symbols
+" let g:airline_left_sep = ''
+" let g:airline_left_alt_sep = ''
+" let g:airline_right_sep = ''
+" let g:airline_right_alt_sep = ''
+"let g:airline_symbols.branch = ''
+"let g:airline_symbols.readonly = ''
+"let g:airline_symbols.linenr = ''
+" old vim-powerline symbols
+"let g:airline_left_sep = '⮀'
+"let g:airline_left_alt_sep = '⮁'
+"let g:airline_right_sep = '⮂'
+"let g:airline_right_alt_sep = '⮃'
+"let g:airline_symbols.branch = '⭠'
+"let g:airline_symbols.readonly = '⭤'
+"let g:airline_symbols.linenr = '⭡'
+
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>- <Plug>AirlineSelectPrevTab
+nmap <leader>= <Plug>AirlineSelectNextTab
+
+
+""设置折叠
+"设置当前是否折叠
+"set foldenable
+"设置折叠级数, 越低折叠的越多, 默认为0
+"set foldlevel=0
+"设置折叠方式: 按缩进折叠
+"set foldmethod=indent
+"按marker折叠: 如{{{和}}}, {{{1和}}}1, 其中数字代表折叠级数
+"set foldmethod=marker
+"按键映射, 空格键来控制开关折叠
+"nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+
+""设置标签tags
+set tags=./.tags;,.tags
+"设置根据打开文件自动更换目录
+"set autochdir
+
+" gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = '.tags'
+
+" 同时开启 ctags 和 gtags 支持：
+let g:gutentags_modules = []
+if executable('ctags')
+    let g:gutentags_modules += ['ctags']
+endif
+if executable('gtags-cscope') && executable('gtags')
+    let g:gutentags_modules += ['gtags_cscope']
+endif
+
+" 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let g:gutentags_cache_dir = expand('~/.cache/tags')
+" 配置 ctags 的参数
+let g:gutentags_ctags_extra_args = ['--fields=+niazSl', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+" 如果使用 universal ctags 需要增加下面一行
+let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+" 禁用 gutentags 自动加载 gtags 数据库的行为
+let g:gutentags_auto_add_gtags_cscope = 0
+"Change focus to quickfix window after search (optional).
+let g:gutentags_plus_switch = 1
+
+""cscope
+if has("cscope")
+    if has("mac")
+        if executable('gtags-cscope') && executable('gtags')
+            set csprg=/usr/local/bin/gtags-cscope
+        else
+            set csprg=/usr/local/bin/cscope
+        endif
+    else
+        set csprg=/usr/bin/cscope
+    endif
+
+    if executable('gtags-cscope') && executable('gtags')
+        "禁用原GscopeFind按键映射
+        let g:gutentags_plus_nomap = 1
+        "Find this C symbol 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
+        nmap <C-\>s :GscopeFind s <C-R>=expand("<cword>")<CR><CR>
+        "Find this difinition 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
+        nmap <C-\>g :GscopeFind g <C-R>=expand("<cword>")<CR><CR>
+        "Find functions called by this function 查找本函数调用的函数
+        nmap <C-\>d :GscopeFind d <C-R>=expand("<cword>")<CR><CR>
+        "Find functions calling this function 查找调用本函数的函数
+        nmap <C-\>c :GscopeFind c <C-R>=expand("<cword>")<CR><CR>
+        "Find this text string 查找指定的字符串
+        nmap <C-\>t :GscopeFind t <C-R>=expand("<cword>")<CR><CR>
+        "Find this egrep pattern 查找egrep模式，相当于egrep功能，但查找速度快多了
+        nmap <C-\>e :GscopeFind e <C-R>=expand("<cword>")<CR><CR>
+        "Find this file 查找并打开文件，类似vim的能
+        nmap <C-\>f :GscopeFind f <C-R>=expand("<cfile>")<CR><CR>
+        "Find files #including this file 查找包含本文件的文件
+        nmap <C-\>i :GscopeFind i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    else
+        set csto=1
+        set cst
+        set nocsverb
+        " add any database in current directory
+        if filereadable("cscope.out")
+            cs add cscope.out
+        endif
+        set csverb
+
+        "Find this C symbol 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
+        nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+        "Find this difinition 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
+        nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+        "Find functions called by this function 查找本函数调用的函数
+        nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+        "Find functions calling this function 查找调用本函数的函数
+        nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+        "Find this text string 查找指定的字符串
+        nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+        "Find this egrep pattern 查找egrep模式，相当于egrep功能，但查找速度快多了
+        nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+        "Find this file 查找并打开文件，类似vim的find功能
+        nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+        "Find files #including this file 查找包含本文件的文件
+        nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+
+        nmap <C-F12> :cs add cscope.out<CR>
+        "F12用ctags生成tags
+        nmap <F12> :!ctags -R --c++-kinds=+p --fields=+ialS --extra=+q -f .tags<CR>
+        "--language-force=C++
+        nmap <S-F12> :!cscope -Rbkq<CR>
+        " cscope参数
+        "-R: 在生成索引文件时，搜索子目录树中的代码
+        "-b: 只生成索引文件，不进入cscope的界面
+        "-d: 只调出cscope gui界面，不跟新cscope.out
+        "-k: 在生成索引文件时，不搜索/usr/include目录
+        "-q: 生成cscope.in.out和cscope.po.out文件，加快cscope的索引速度
+        "-i: 如果保存文件列表的文件名不是cscope.files时，需要加此选项告诉cscope到哪儿去找源文件列表。可以使用"-"，表示由标准输入获得文件列表。
+        "-I dir: 在-I选项指出的目录中查找头文件
+        "-u: 扫描所有文件，重新生成交叉索引文件
+        "-C: 在搜索时忽略大小写
+        "-P path: 在以相对路径表示的文件前加上的path，这样，你不用切换到你数据库文件所在的目录也可以使用
+    endif
+endif
+
+" PreviewTag Gscope QuickFix栏预览, <C-w>z关闭预览窗口
+noremap <m-u> :PreviewScroll -1<cr>
+noremap <m-d> :PreviewScroll +1<cr>
+inoremap <m-u> <c-\><c-o>:PreviewScroll -1<cr>
+inoremap <m-d> <c-\><c-o>:PreviewScroll +1<cr>
+
+autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
+autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
+
+noremap <F4> :PreviewSignature!<cr>
+inoremap <F4> <c-\><c-o>:PreviewSignature!<cr>
+
+" echodoc命令栏提示函数参数
+let g:echodoc_enable_at_startup = 1
+
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
+
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+autocmd Syntax javascript set syntax=jquery " JQuery syntax support
+
+" Nerd Tree
+let NERDTreeWinSize=40
+let NERDTreeChDirMode=2
+let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
+let NERDTreeShowBookmarks=1
+let NERDTreeWinPos="left"
+let NERDTreehHijackNetrw=1
+let NERDTreeQuitOnOpen=3
+"autocmd vimenter * if !argc() | NERDTree | endif " Automatically open a NERDTree if no files where specified
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif " Close vim if the only window left open is a NERDTree
+nmap <F2> :NERDTreeToggle<cr>
+
+" NERD Commenter
+" 注释的时候自动加个空格, 强迫症必配
+let g:NERDSpaceDelims=1
+"let g:NERDAltDelims_c = 1
+"let g:NERDAltDelims_cpp = 1
+
+" Tagbar
+let g:tagbar_width=35
+let g:tagbar_autofocus=0
+nmap <F3> :TagbarToggle<CR>
+
+" Emmet
+"let g:user_emmet_mode='i' " enable for insert mode
+
+
+"syntax hightlight
+syntax enable
+
+" YouCompleteMe
+"设置全局配置文件的路径
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+"不显示开启vim时检查ycm_extra_conf文件的信息
+let g:ycm_confirm_extra_conf=0
+
+"补全快捷键，默认是CTRL + space，修改为ALT + ;
+let g:ycm_key_invoke_completion = '<M-,>'
+"设置ycm补全按键，解决与ultisnips冲突
+"let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
+"let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
+nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
+
+"开启基于tag的补全，可以在这之后添加需要的标签路径
+let g:ycm_collect_identifiers_from_tags_files = 1
+"开启语义补全
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+"设置预览窗口
+let g:ycm_add_preview_to_completeopt = 0
+"在接受补全后不分裂出一个窗口显示接受的项
+set completeopt-=preview
+"补全后自动关闭预览窗口
+"let g:ycm_autoclose_preview_window_after_completion=1
+"输入2个字符触发符号补全
+let g:ycm_min_num_identifier_candidate_chars = 2
+"不查询ultisnips插件提供的代码模板补全，如果需要，设置成1即可
+let g:ycm_use_ultisnips_completer=1
+"在注释输入中也能补全
+let g:ycm_complete_in_comments = 1
+"在字符串输入中也能补全
+let g:ycm_complete_in_strings = 1
+"vimrc 中定义了 g:ycm_semantic_triggers 以后，默认的 . / -> / :: 是不会被覆盖的，只会追加成新的 trigger，这里我们追加了一个正则表达式，代表相关语言的源文件中，用户只需要输入符号的两个字母，即可自动弹出语义补全：
+let g:ycm_semantic_triggers =  {
+            \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{4}'],
+            \ 'cs,lua,javascript': ['re!\w{2}'],
+            \ }
+"设置在下面几种格式的文件上屏蔽ycm
+let g:ycm_filetype_blacklist = {
+            \ 'tagbar' : 1,
+            \ 'nerdtree' : 1,
+            \}
+
+"禁用代码诊断
+let g:ycm_show_diagnostics_ui = 0
+"总是弹出诊断信息窗口
+let g:ycm_always_populate_location_list = 1
+let g:ycm_error_symbol='>>'
+let g:ycm_warning_symbol='>*'
+
+" Complete_Parameter: c-j/c-k选择参数
+set noshowmode "以便在命令行栏提示函数参数
+"let g:complete_parameter_use_ultisnips_mapping = 1
+inoremap <silent><expr> ( complete_parameter#pre_complete("()")
+smap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+smap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+imap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+
+
+" SirVer/ultisnips 代码片断
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-n>"
+let g:UltiSnipsJumpBackwardTrigger="<c-p>"
+let g:UltiSnipsListSnippets="<c-x><c-l>"
+"定义存放代码片段的文件夹，使用自定义和默认的，将会的到全局，有冲突的会提示
+let g:UltiSnipsSnippetDirectories=["bundle/vim-snippets/UltiSnips"]
+" UltiSnips completion function that tries to expand a snippet. If there's no
+" snippet for expanding, it checks for completion window and if it's
+" shown, selects first element. If there's no completion window it tries to
+" jump to next placeholder. If there's no placeholder it just returns TAB key
+function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            call UltiSnips#JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+               return "\<TAB>"
+            endif
+        endif
+    endif
+    return ""
+endfunction
+
+function! g:UltiSnips_Reverse()
+    call UltiSnips#JumpBackwards()
+    if g:ulti_jump_backwards_res == 0
+        return "\<C-P>"
+    endif
+
+    return ""
+endfunction
+
+" Expand snippet or return
+let g:ulti_expand_res = 0
+function! Ulti_ExpandOrEnter()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res
+        return ''
+    else
+        return "\<return>"
+endfunction
+" Set <return> as UltiSnips primary trigger
+inoremap <silent> <return> <C-R>=Ulti_ExpandOrEnter()<CR>
+
+"au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger     . " <C-R>=g:UltiSnips_Complete()<cr>"
+"au BufEnter * exec "inoremap <silent> " .     g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
+
+"autocmd VimEnter * imap <silent> <expr> <TAB> delimitMate#ShouldJump() ? delimitMate#JumpAny() : "\<C-r>=UltiSnips_Complete()\<CR>"
+"autocmd VimEnter * imap <slient> <expr> <TAB> delimitMate#ShouldJump() ? delimitMate#JumpAny() : "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<CR>"
+"autocmd VimEnter * inoremap <S-TAB> <S-TAB><Paste>
+
+" 解决YCM删除字符与delimitMateBS冲突
+imap <silent> <BS> <C-R>=YcmOnDeleteChar()<CR><Plug>delimitMateBS
+
+function! YcmOnDeleteChar()
+  if pumvisible()
+    return "\<C-y>"
+  endif
+  return ""
+endfunction
+
+" leaderf
+"let g:Lf_ShortcutF = '<c-p>'
+" let g:Lf_ShortcutB = '<m-n>'
+let g:Lf_StlSeparator = { 'left': '', 'right': '' }
+let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
+let g:Lf_WorkingDirectoryMode = 'Ac'
+let g:Lf_WindowHeight = 0.30
+let g:Lf_CacheDirectory = expand('~/.vim/cache')
+let g:Lf_ShowRelativePath = 1
+let g:Lf_HideHelp = 0
+let g:Lf_StlColorscheme = 'powerline'
+let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+noremap <c-p> :cclose<cr>:Leaderf mru --regexMode<cr>
+noremap <m-p> :cclose<cr>:LeaderfFunction<cr>
+noremap <m-P> :cclose<cr>:LeaderfBufTag<cr>
+noremap <m-n> :cclose<cr>:LeaderfBuffer<cr>
+noremap <m-m> :cclose<cr>:LeaderfHistoryCmd<cr>
+
+"----------------------------------------------------------------------
+" Signify
+"----------------------------------------------------------------------
+let g:signify_vcs_list = ['git', 'svn']
+let g:signify_difftool = 'diff'
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '_'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '~'
+let g:signify_sign_changedelete      = g:signify_sign_change
+let g:signify_as_gitgutter           = 1
+
+let g:signify_vcs_cmds = {
+            \ 'git': 'git diff --no-color --diff-algorithm=histogram --no-ext-diff -U0 -- %f',
+            \}
+
+
+" Tabular 对齐
+"let mapleader=','
+if exists(":Tabularize")
+    "align to symbol '='
+    noremap <F10> :Tabularize /=<CR>
+    "vmap <F10> :Tabularize /=<CR>
+    "align to first symol space, left alignment with 0 space ahead
+    noremap <S-F10> :Tabularize /^[^ ]*\zs /l0<CR>
+    "vmap <S-F10> :Tabularize /^[^ ]*\zs /l0<CR>
+    "align to symbol space, left alignment with 0 space ahead
+    noremap <C-F10> :Tabularize / /l0<CR>
+    "vmap <C-F10> :Tabularize / /l0<CR>
+    "vmap <C-F10> :Tabularize /:\zs<CR>
+    nnoremap gb= :Tabularize /=<CR>
+    vnoremap gb= :Tabularize /=<CR>
+    nnoremap gb/ :Tabularize /\/\//l4c1<CR>
+    vnoremap gb/ :Tabularize /\/\//l4c1<CR>
+    nnoremap gb, :Tabularize /,/l0r1<CR>
+    vnoremap gb, :Tabularize /,/l0r1<CR>
+    nnoremap gbl :Tabularize /\|<cr>
+    vnoremap gbl :Tabularize /\|<cr>
+    nnoremap gbc :Tabularize /#/l4c1<cr>
+    nnoremap gb<bar> :Tabularize /\|<cr>
+    vnoremap gb<bar> :Tabularize /\|<cr>
+    nnoremap gbr :Tabularize /\|/r0<cr>
+    vnoremap gbr :Tabularize /\|/r0<cr>
+endif
+
+"do :Tabularize each time type | @ insertmode
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+
+" ListToggle
+let g:lt_location_list_toggle_map = '<leader>l'
+let g:lt_quickfix_list_toggle_map = '<leader>q'
+
+" Vim-multi-cursor
+" Unmap <m-n> key
+let g:multi_cursor_use_default_mapping=0
+let g:multi_cursor_start_key='<C-n>'
+let g:multi_cursor_start_word_key='g<C-n>'
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+
+" vim-expand-region
+vmap v <Plug>(expand_region_expand)
+vmap V <Plug>(expand_region_shrink)
+
+" AutoFormat
+"F5自动格式化代码
+noremap <F5> :Autoformat<CR>
+let g:formatdef_astyle_c_cpp_cs_java = '"astyle --style=attach --pad-header --pad-comma --pad-oper"'
+let g:formatters_c = ['astyle_c_cpp_cs_java']
+let g:formatters_cpp = ['astyle_c_cpp_cs_java']
+let g:formatters_java = ['astyle_c_cpp_cs_java']
+"设置autoformat参数
+let g:autoformat_autoindent = 1
+let g:autoformat_retab = 1
+let g:autoformat_remove_trailing_spaces = 1
+let g:autoformat_verbosemode=0
+"保存时自动格式化代码，针对所有支持的文件
+"au BufWrite *.c :Autoformat
+"au BufWrite *.h :Autoformat
+"au BufWrite *.cpp :Autoformat
+
+" 切换c文件和h头文件
+noremap <leader>as :A<CR>
+
+"Ctrl-F11浏览当前所有文件buffer
+nmap <C-F11> :ls<CR>
+
+if has("mac")
+    "CMD-F11关闭当前打开文件的buffer, 并删除buffer
+    map <D-F11> :bd<CR>
+else
+    map <A-F11> :bd<CR>
+endif
+
+
+" Run commands that require an interactive shell
+nnoremap <leader>r :RunInInteractiveShell<space>
+
+" Clean trailing spaces
+nnoremap <leader><space> :FixWhitespace<cr>
+
+

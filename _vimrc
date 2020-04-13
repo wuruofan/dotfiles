@@ -4,7 +4,11 @@ set nocompatible
 
 let $VIMHOME = expand("$HOME/.vim")
 let $BUNDLE = expand("$VIMHOME/bundle")
-let $VIMPLUG = expand("$VIMHOME/autoload/plug.vim")
+if has("nvim")
+  let $VIMPLUG = expand("~/.config/nvim/autoload/plug.vim")
+else
+  let $VIMPLUG = expand("$VIMHOME/autoload/plug.vim")
+endif
 
 if empty(glob(expand($VIMPLUG)))
   silent !curl -fLo $VIMPLUG --create-dirs

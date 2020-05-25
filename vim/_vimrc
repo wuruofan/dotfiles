@@ -154,7 +154,7 @@ set colorcolumn=+1
 
 " Numbers
 set number
-set numberwidth=5
+set numberwidth=4
 set rnu
 
 "设置换行
@@ -173,9 +173,9 @@ set statusline+=%{fugitive#statusline()} "  Git Hotness
 " Display extra whitespace
 set list listchars=tab:»·,trail:·
 
-" Softtabs, 4 spaces
-set tabstop=4
-set shiftwidth=4
+" Softtabs, 2 spaces
+set tabstop=2
+set shiftwidth=2
 set shiftround
 set expandtab
 "设置智能TAB, shiftwidth只用于左右缩进
@@ -733,8 +733,9 @@ vmap V <Plug>(expand_region_shrink)
 "F5自动格式化代码
 noremap <F5> :Autoformat<CR>
 let g:formatdef_astyle_c_cpp_cs_java = '"astyle --style=attach --pad-header --pad-comma --pad-oper"'
-let g:formatters_c = ['astyle_c_cpp_cs_java']
-let g:formatters_cpp = ['astyle_c_cpp_cs_java']
+let g:formatdef_clang_format_google = '"clang-format --style=Google"'
+let g:formatters_c = ['clang_format_google']
+let g:formatters_cpp = ['clang_format_google']
 let g:formatters_java = ['astyle_c_cpp_cs_java']
 "设置autoformat参数
 let g:autoformat_autoindent = 1

@@ -1,10 +1,21 @@
 " Specify a directory for Plugs
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'Plug'
+
+" Initialize Plug system
 call plug#begin('~/.vim/bundle')
+
+"vim 语法高亮
+Plug 'pboettch/vim-cmake-syntax'
 
 "vim环境下运行交互命令
 Plug 'christoomey/vim-run-interactive'
+
+"vim cmake
+Plug 'vhdirk/vim-cmake'
+
+"super-tab
+Plug 'ervandew/supertab'
 
 " 代码补全
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
@@ -44,8 +55,7 @@ Plug 'justinmk/vim-dirvish'
 " 符号成对匹配跳转，代替matchit
 Plug 'andymass/vim-matchup'
 " 自动补全括号、引号
-Plug 'Raimondi/delimitMate'
-"Plug 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'
 " 用成对符号包裹文字
 Plug 'tpope/vim-surround'
 " .重复上一次surrounding操作
@@ -129,7 +139,7 @@ Plug 'tpope/vim-fugitive'
 
 " 自动格式化插件
 Plug 'Chiel92/vim-autoformat'
-Plug 'sbdchd/neoformat'
+"Plug 'sbdchd/neoformat'
 " 去处行尾空格
 Plug 'bronson/vim-trailing-whitespace'
 
@@ -139,5 +149,4 @@ Plug 'dhruvasagar/vim-table-mode'
 " VIM中文文档
 "Plug 'yianwillis/vimcdoc'
 
-" Initialize Plug system
 call plug#end()

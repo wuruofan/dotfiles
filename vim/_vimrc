@@ -463,7 +463,7 @@ noremap <F4> :PreviewSignature!<cr>
 inoremap <F4> <c-\><c-o>:PreviewSignature!<cr>
 
 " echodoc命令栏提示函数参数
-let g:echodoc_enable_at_startup = 1
+"let g:echodoc_enable_at_startup = 1
 
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
@@ -562,7 +562,7 @@ let g:ycm_warning_symbol='>*'
 
 " Complete_Parameter: c-j/c-k选择参数
 set noshowmode "以便在命令行栏提示函数参数
-let g:complete_parameter_use_ultisnips_mapping = 1
+"let g:complete_parameter_use_ultisnips_mapping = 1
 inoremap <silent><expr> ( complete_parameter#pre_complete("()")
 smap <c-j> <Plug>(complete_parameter#goto_next_parameter)
 imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
@@ -584,18 +584,13 @@ let g:UltiSnipsListSnippets="<c-x><c-l>"
 "定义存放代码片段的文件夹，使用自定义和默认的，将会的到全局，有冲突的会提示
 let g:UltiSnipsSnippetDirectories=["bundle/vim-snippets/UltiSnips"]
 
-" AutoPairsFlyMode
-let g:AutoPairsFlyMode = 1
-
+" AutoPairs和CompleteParameter插件左括号映射冲突
+" 删除<:>，规避cpp中使用流符号<<触发自动配对问题
+let delimitMate_matchpairs = "(:),[:],{:}"
 " 解决YCM删除字符与delimitMateBS冲突
-inoremap <silent> <BS> <C-R>=YcmOnDeleteChar()<CR>
-
-function! YcmOnDeleteChar()
-  if pumvisible()
-    return "\<C-y>"
-  endif
-  return AutoPairsDelete()
-endfunction
+" Notice: some terminal may not support <S-BS>
+imap <expr> <CR> pumvisible() ? "\<c-y>" : "\<Plug>delimitMateBS"
+imap <expr> <CR> pumvisible() ? "\<c-y>" : "\<Plug>delimitMateCR"
 
 " leaderf
 "let g:Lf_ShortcutF = '<leader>f'

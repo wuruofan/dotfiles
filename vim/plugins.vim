@@ -55,7 +55,8 @@ Plug 'justinmk/vim-dirvish'
 " 符号成对匹配跳转，代替matchit
 Plug 'andymass/vim-matchup'
 " 自动补全括号、引号
-Plug 'jiangmiao/auto-pairs'
+Plug 'raimondi/delimitmate'
+"Plug 'jiangmiao/auto-pairs'
 " 用成对符号包裹文字
 Plug 'tpope/vim-surround'
 " .重复上一次surrounding操作

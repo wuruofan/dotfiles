@@ -1,0 +1,95 @@
+# This file store general configs for bash/zsh.
+
+
+# 带颜色的ls，并显示目录／
+alias ls='ls -Gp'
+# 显示B/KB/MB大小
+# alias ll='ls -lh'
+# alias la='ls -lah'
+
+# 快速返回到父目录
+# alias ..='cd ..'
+# alias ...='cd ../../'
+
+# 加入颜色输出，在搜索log文件时很有用
+# alias grep='grep --color=auto'
+# alias egrep='egrep --color=auto'
+# alias fgrep='fgrep --color=auto'
+
+alias startaria2='aria2c --conf-path="/Users/meow/.aria2/aria2.conf" -D'
+
+export PATH=$PATH:/opt/pkg_uninstaller
+
+export NDKROOT=~/Library/Android/sdk/ndk/23.1.7779620
+# for android.toolchain.cmake happy
+export ANDROID_NDK=${NDKROOT}
+export ANDROID_SDK=~/Library/Android/sdk
+export JAVA_HOME=`/usr/libexec/java_home`
+
+export PATH=$PATH:$NDKROOT:$ANDROID_SDK:$JAVA_HOME
+export PATH=$PATH:$ANDROID_SDK/emulator:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools:$ANDROID_SDK/tools/bin
+export PATH=$PATH:$ANDROID_SDK/build-tools/29.0.3
+export PATH=$PATH:$NDKROOT/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64/bin
+#export PATH=$PATH:~/devkits/aarch64-linux-android-4.9/bin
+
+#function emulator { cd "$(dirname "$(which emulator)")" && ./emulator "$@"; }
+
+WORKSPACE='~/workspace'
+alias ntfs='sudo mkdir /Volumes/NTFS &&sudo mount_ntfs -o rw,nobrowse /dev/disk2s2 /Volumes/NTFS'
+
+# Haipai signapk tool
+HP_SIGNAPK_TOOLS=$WORKSPACE/usb_tethering/hp_signapk_tools/
+alias hpsign="java -jar $HP_SIGNAPK_TOOLS/signapk.jar $HP_SIGNAPK_TOOLS/platform.x509.pem $HP_SIGNAPK_TOOLS/platform.pk8"
+
+alias avd="emulator -writable-system @Pixel_2_API_26 &"
+alias xsign="sudo codesign --force --deep --sign -"
+
+# Gtags
+export GTAGSLABEL=pygments
+export GTAGSCONF="$HOME/.globalrc"
+
+# Flutter
+#export PATH=/Users/meow/devkits/flutter/bin:$PATH
+
+# VimR
+export PATH=~/devkits/bin:$PATH
+
+# Trash
+alias rm='trash'
+
+# pyenv
+## for YCM need dynamic python lib
+export PYTHON_CONFIGURE_OPTS="--enable-framework"
+#export PATH=~/.pyenv/shims:$PATH
+export PATH="$HOME/.pyenv/bin:$PATH"
+## pyenv shell
+eval "$(pyenv init -)"
+## pyenv-virtualenv
+if which pyenv-virtualenv-init > /dev/null;
+  then eval "$(pyenv virtualenv-init -)";
+fi
+
+# meld shell cmd
+export PATH=~/Google\ Drive/bin:$PATH
+
+# imgtool for android system img
+export PATH=~/devkits/imgtool:$PATH
+
+# for gem install with no permission error
+export GEM_HOME="$HOME/.gem"
+
+# ruby
+#export PATH='/usr/local/opt/ruby/bin':$PATH
+#export PATH='/usr/local/lib/ruby/gems/3.0.0/bin':$PATH
+
+# ruby-build
+#export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
+# rbenv
+#export PATH="$HOME/.rbenv/bin:$PATH"
+#eval "$(rbenv init -)"
+#export RUBY_BUILD_MIRROR_URL=https://cache.ruby-china.com
+
+
+# for apktool scripts
+export PATH="$HOME/devkits/apktool_scripts:$PATH"

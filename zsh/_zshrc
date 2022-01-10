@@ -113,11 +113,12 @@ source ~/.shrc.local
 alias vim="nvim"
 
 # proxy list
-alias proxy='export all_proxy=socks5://127.0.0.1:1086'
+alias proxy='export all_proxy=socks5://127.0.0.1:54216'
+#alias proxy='export all_proxy=http://127.0.0.1:54215'
 alias unproxy='unset all_proxy'
 
 # auto correct
 zstyle ':completion:incremental:*' completer _complete _correct
 zstyle ':completion:*' completer _complete _prefix _correct _prefix _match _approximate
 
-eval $(thefuck --alias)
+eval "$(pyenv init -)"

@@ -7,6 +7,7 @@ call plug#begin('~/.vim/bundle')
 
 "vim 语法高亮
 Plug 'pboettch/vim-cmake-syntax'
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 "vim环境下运行交互命令
 Plug 'christoomey/vim-run-interactive'
@@ -125,7 +126,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'nanotech/jellybeans.vim'
 Plug 'rakr/vim-one'
 Plug 'hzchirs/vim-material'
-Plug 'srcery-colors/srcery-vim'
+"Plug 'srcery-colors/srcery-vim'
 
 " 启动界面
 Plug 'mhinz/vim-startify'

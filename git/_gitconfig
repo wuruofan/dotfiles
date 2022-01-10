@@ -1,5 +1,5 @@
 [user]
-	name = rf.wu
+	name = wuruofan
 	email = demonsimon@gmail.com
 [color]
 	ui = true
@@ -16,25 +16,28 @@
 	dt = difftool
 	cp = cherry-pick
 [merge]
-	tool = vimdiff
+	tool = vim -d
 [diff]
 	tool = ksdiff
 [core]
 	autocrlf = input
-	excludesfile = /Users/meow/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	filemode = false
+	editor = nvim
 [difftool "ksdiff"]
 	cmd = ksdiff \"$LOCAL\" \"$REMOTE\"
 [difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	cmd = /usr/local/bin/ksdiff -w \"$LOCAL\" \"$REMOTE\"
 	path = 
 [mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustExitCode = true
 [commit]
-	template = /Users/meow/.stCommitMsg
+	template = ~/.stCommitMsg
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[pull]
+	rebase = true

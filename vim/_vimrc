@@ -383,6 +383,9 @@ let g:gutentags_plus_switch = 1
 let g:gutentags_define_advanced_commands = 1
 let g:gutentags_trace = 0
 
+" 禁用gutentags的文件类型
+let g:gutentags_exclude_filetypes = ['gitcommit', 'gitconfig', 'gitrebase', 'gitsendemail', 'git']
+
 ""cscope
 if has("cscope")
     if executable('gtags-cscope') && executable('gtags')

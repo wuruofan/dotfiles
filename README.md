@@ -65,7 +65,6 @@ vim ~/.local.gitconfig  # 填入实际值
 
 # 4. 安装 vim 插件
 vim +PlugInstall +qa
-# YouCompleteMe 会自动编译（需要 cmake、llvm 等依赖）
 ```
 
 ### 更新 dotfiles

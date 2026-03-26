@@ -11,6 +11,9 @@ let $VIMHOME = expand("$HOME/.vim")
 let $BUNDLE = expand("$VIMHOME/bundle")
 if has("nvim")
   let $VIMPLUG = expand("~/.local/share/nvim/site/autoload/plug.vim")
+  " Neovim 0.11+ 内置补全：Ctrl-N 自动弹出补全菜单
+  set completeopt+=menuone,noinsert
+  inoremap <silent><expr> <C-n> pumvisible() ? '<C-n>' : '<C-x><C-n>'
 else
   let $VIMPLUG = expand("$VIMHOME/autoload/plug.vim")
 endif
@@ -289,9 +292,9 @@ let g:airline#extensions#tabline#fnamemod = ':p:~:.'
 let g:airline#extensions#tabline#fnametruncate = 16
 let g:airline#extensions#tabline#fnamecollapse = 2
 let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#ycm#enabled = 1
-let g:airline#extensions#ycm#error_symbol = 'E:'
-let g:airline#extensions#ycm#warning_symbol = 'W:'
+" let g:airline#extensions#ycm#enabled = 1  " removed with YCM
+" let g:airline#extensions#ycm#error_symbol = 'E:'  " removed with YCM
+" let g:airline#extensions#ycm#warning_symbol = 'W:'  " removed with YCM
 
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
@@ -524,80 +527,80 @@ syntax enable
 "python
 let g:python3_host_prog='~/.pyenv/shims/python'
 
-" YouCompleteMe
+" YouCompleteMe (removed: 2026-03-26)
 "设置全局配置文件的路径
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+" let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 "不显示开启vim时检查ycm_extra_conf文件的信息
-let g:ycm_confirm_extra_conf=0
+" let g:ycm_confirm_extra_conf=0
 
 "补全快捷键，默认是CTRL + space，修改为ALT + ;
-let g:ycm_key_invoke_completion = '<M-,>'
+" let g:ycm_key_invoke_completion = '<M-,>'
 "设置ycm补全按键，解决与ultisnips冲突
-"let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
-"let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
-nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
+" let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
+" let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
+" nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" nnoremap <leader>gi :YcmCompleter GoToInclude<CR>
 
 "开启基于tag的补全，可以在这之后添加需要的标签路径
-let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_collect_identifiers_from_tags_files = 1
 "开启语义补全
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" let g:ycm_seed_identifiers_with_syntax = 1
+" let g:ycm_collect_identifiers_from_comments_and_strings = 1
 "设置预览窗口
-let g:ycm_add_preview_to_completeopt = 0
+" let g:ycm_add_preview_to_completeopt = 0
 "在接受补全后不分裂出一个窗口显示接受的项
-set completeopt-=preview
+" set completeopt-=preview
 "补全后自动关闭预览窗口
-"let g:ycm_autoclose_preview_window_after_completion=1
+" let g:ycm_autoclose_preview_window_after_completion=1
 "输入2个字符触发符号补全
-let g:ycm_min_num_identifier_candidate_chars = 2
+" let g:ycm_min_num_identifier_candidate_chars = 2
 "不查询ultisnips插件提供的代码模板补全，如果需要，设置成1即可
-let g:ycm_use_ultisnips_completer=1
+" let g:ycm_use_ultisnips_completer=1
 "在注释输入中也能补全
-let g:ycm_complete_in_comments = 1
+" let g:ycm_complete_in_comments = 1
 "在字符串输入中也能补全
-let g:ycm_complete_in_strings = 1
+" let g:ycm_complete_in_strings = 1
 "vimrc 中定义了 g:ycm_semantic_triggers 以后，默认的 . / -> / :: 是不会被覆盖的，只会追加成新的 trigger，这里我们追加了一个正则表达式，代表相关语言的源文件中，用户只需要输入符号的两个字母，即可自动弹出语义补全：
-let g:ycm_semantic_triggers =  {
-      \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{4}'],
-      \ 'cs,lua,javascript': ['re!\w{2}'],
-      \ }
+" let g:ycm_semantic_triggers =  {
+"       \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{4}'],
+"       \ 'cs,lua,javascript': ['re!\w{2}'],
+"       \ }
 "设置在下面几种格式的文件上屏蔽ycm
-let g:ycm_filetype_blacklist = {
-      \ 'tagbar' : 1,
-      \ 'nerdtree' : 1,
-      \}
+" let g:ycm_filetype_blacklist = {
+"       \ 'tagbar' : 1,
+"       \ 'nerdtree' : 1,
+"       \}
 
 "禁用代码诊断
-let g:ycm_show_diagnostics_ui = 0
+" let g:ycm_show_diagnostics_ui = 0
 "总是弹出诊断信息窗口
-let g:ycm_always_populate_location_list = 1
-let g:ycm_error_symbol='>>'
-let g:ycm_warning_symbol='>*'
+" let g:ycm_always_populate_location_list = 1
+" let g:ycm_error_symbol='>>'
+" let g:ycm_warning_symbol='>*'
 
-" Complete_Parameter: c-j/c-k选择参数
-set noshowmode "以便在命令行栏提示函数参数
-"let g:complete_parameter_use_ultisnips_mapping = 1
-inoremap <silent><expr> ( complete_parameter#pre_complete("()")
-smap <c-j> <Plug>(complete_parameter#goto_next_parameter)
-imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
-smap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
-imap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+" Complete_Parameter: c-j/c-k选择参数 (removed YCM dep)
+" set noshowmode "以便在命令行栏提示函数参数
+" let g:complete_parameter_use_ultisnips_mapping = 1
+" inoremap <silent><expr> ( complete_parameter#pre_complete("()")
+" smap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+" imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+" smap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+" imap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
 
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+" make YCM compatible with UltiSnips (using supertab) (removed)
+" let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+" let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+" let g:SuperTabDefaultCompletionType = '<C-n>'
 
-" SirVer/ultisnips 代码片断
+" SirVer/ultisnips 代码片断 (removed YCM dep)
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-let g:UltiSnipsListSnippets="<c-x><c-l>"
+" let g:UltiSnipsExpandTrigger = "<tab>"
+" let g:UltiSnipsJumpForwardTrigger = "<tab>"
+" let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" let g:UltiSnipsListSnippets="<c-x><c-l>"
 "定义存放代码片段的文件夹，使用自定义和默认的，将会的到全局，有冲突的会提示
-let g:UltiSnipsSnippetDirectories=["bundle/vim-snippets/UltiSnips"]
+" let g:UltiSnipsSnippetDirectories=["bundle/vim-snippets/UltiSnips"]
 
 " AutoPairs和CompleteParameter插件左括号映射冲突
 " 删除<:>，规避cpp中使用流符号<<触发自动配对问题

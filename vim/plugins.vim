@@ -15,18 +15,18 @@ Plug 'christoomey/vim-run-interactive'
 "vim cmake
 Plug 'vhdirk/vim-cmake'
 
-"super-tab
-Plug 'ervandew/supertab'
+"super-tab (removed: Neovim 0.11+ built-in completion)
+" Plug 'ervandew/supertab'
 
-" 代码补全
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+" 代码补全 (removed: YouCompleteMe, not needed for config editing)
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 " 快捷键打开Quickfix/LocationList
 Plug 'Valloric/ListToggle'
 " 函数参数提示
 "Plug 'Shougo/echodoc.vim'
 "Plug 'Shougo/context_filetype.vim'
-" 补全参数
-Plug 'tenfyzhong/CompleteParameter.vim'
+" 补全参数 (removed: YCM dependency, 2026-03-26)
+" Plug 'tenfyzhong/CompleteParameter.vim'
 
 " 代码模版
 "Plug 'SirVer/ultisnips'

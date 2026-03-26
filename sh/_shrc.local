@@ -16,7 +16,8 @@ alias ls='ls -Gp'
 # alias egrep='egrep --color=auto'
 # alias fgrep='fgrep --color=auto'
 
-alias startaria2='aria2c --conf-path="/Users/meow/.aria2/aria2.conf" -D'
+alias datetime='date +%Y-%m-%d\ %H:%M:%S'
+alias timestamp='date +%s'
 
 export PATH=$PATH:/opt/pkg_uninstaller
 
@@ -35,13 +36,6 @@ export PATH=$PATH:$NDKROOT/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-
 #function emulator { cd "$(dirname "$(which emulator)")" && ./emulator "$@"; }
 
 WORKSPACE='~/workspace'
-alias ntfs='sudo mkdir /Volumes/NTFS &&sudo mount_ntfs -o rw,nobrowse /dev/disk2s2 /Volumes/NTFS'
-
-# Haipai signapk tool
-HP_SIGNAPK_TOOLS=$WORKSPACE/usb_tethering/hp_signapk_tools/
-alias hpsign="java -jar $HP_SIGNAPK_TOOLS/signapk.jar $HP_SIGNAPK_TOOLS/platform.x509.pem $HP_SIGNAPK_TOOLS/platform.pk8"
-
-alias avd="emulator -writable-system @Pixel_2_API_26 &"
 alias xsign="sudo codesign --force --deep --sign -"
 
 # Gtags
@@ -51,45 +45,15 @@ export GTAGSCONF="$HOME/.globalrc"
 # Flutter
 #export PATH=/Users/meow/devkits/flutter/bin:$PATH
 
-# VimR
-export PATH=~/devkits/bin:$PATH
-
 # Trash
+export PATH="/usr/local/opt/trash/bin:$PATH"
 alias rm='trash'
 
 # pyenv
-## for YCM need dynamic python lib
 export PYTHON_CONFIGURE_OPTS="--enable-framework"
-#export PATH=~/.pyenv/shims:$PATH
 export PATH="$HOME/.pyenv/bin:$PATH"
-## pyenv shell
 eval "$(pyenv init -)"
-## pyenv-virtualenv
-if which pyenv-virtualenv-init > /dev/null;
-  then eval "$(pyenv virtualenv-init -)";
-fi
 
-# meld shell cmd
-export PATH=~/Google\ Drive/bin:$PATH
-
-# imgtool for android system img
-export PATH=~/devkits/imgtool:$PATH
-
-# for gem install with no permission error
-export GEM_HOME="$HOME/.gem"
-
-# ruby
-#export PATH='/usr/local/opt/ruby/bin':$PATH
-#export PATH='/usr/local/lib/ruby/gems/3.0.0/bin':$PATH
-
-# ruby-build
-#export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-
-# rbenv
-#export PATH="$HOME/.rbenv/bin:$PATH"
-#eval "$(rbenv init -)"
-#export RUBY_BUILD_MIRROR_URL=https://cache.ruby-china.com
-
-
-# for apktool scripts
-export PATH="$HOME/devkits/apktool_scripts:$PATH"
+# deveco
+export OHPM_HOME="$HOME/Library/Huawei/ohpm"
+export PATH="$OHPM_HOME/bin:$PATH"

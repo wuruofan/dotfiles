@@ -31,4 +31,5 @@ ln -sf $PWD/git/_git-completion.bash ~/.git-completion.bash
 ln -sf $PWD/git/_gitconfig ~/.gitconfig
 
 ln -sf $PWD/zsh/_zshrc ~/.zshrc
+ln -sf $PWD/sh/_shrc.local ~/.shrc.local
 ln -sf $PWD/zsh/agnoster-rfw.zsh-theme ~/.oh-my-zsh/custom/themes/

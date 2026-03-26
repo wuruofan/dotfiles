@@ -1,0 +1,43 @@
+# This file store general configs for bash/zsh.
+# Copy to ~/.shrc.local or link via link.sh
+
+
+# 带颜色的ls，并显示目录／
+alias ls='ls -Gp'
+alias datetime='date +%Y-%m-%d\ %H:%M:%S'
+alias timestamp='date +%s'
+
+export PATH=$PATH:/opt/pkg_uninstaller
+
+# Android NDK/SDK (adjust version as needed)
+export NDKROOT=~/Library/Android/sdk/ndk/23.1.7779620
+export ANDROID_NDK=${NDKROOT}
+export ANDROID_SDK=~/Library/Android/sdk
+export JAVA_HOME=`/usr/libexec/java_home`
+
+export PATH=$PATH:$NDKROOT:$ANDROID_SDK:$JAVA_HOME
+export PATH=$PATH:$ANDROID_SDK/emulator:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools:$ANDROID_SDK/tools/bin
+export PATH=$PATH:$ANDROID_SDK/build-tools/29.0.3
+export PATH=$PATH:$NDKROOT/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64/bin
+
+WORKSPACE='~/workspace'
+
+# macOS codesign (sign binary)
+alias xsign="sudo codesign --force --deep --sign -"
+
+# Gtags
+export GTAGSLABEL=pygments
+export GTAGSCONF="$HOME/.globalrc"
+
+# Trash - use trash CLI instead of rm
+export PATH="/usr/local/opt/trash/bin:$PATH"
+alias rm='trash'
+
+# pyenv
+export PYTHON_CONFIGURE_OPTS="--enable-framework"
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+
+# HarmonyOS / Huawei ohpm
+export OHPM_HOME="$HOME/Library/Huawei/ohpm"
+export PATH="$OHPM_HOME/bin:$PATH"

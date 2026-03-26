@@ -1,0 +1,4 @@
+# 专用于 Homebrew Taps 的 Git 配置
+[core]
+    # 不使用全局 hooks，让 .git/hooks/ 生效（LFS 依赖它）
+    hooksPath =

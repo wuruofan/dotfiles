@@ -8,7 +8,7 @@
 |------|------|---------|
 | `zsh/_zshrc` | 跨机器通用配置（PATH、alias、函数等） | 提交 git |
 | `~/.gitconfig` | 跨机器通用 git 配置 | 提交 git |
-| `~/.gitconfig.local` | 本地 git 配置（hooksPath、gitlab token、github 代理等） | 本地管理，不提交 |
+| `~/.local.gitconfig` | 本地 git 配置（hooksPath、gitlab token、github 代理等） | 本地管理，不提交 |
 | `~/.secrets.config` | API keys（MINIMAX_API_KEY 等） | 本地管理，不提交 |
 | `~/.local.zshrc` | 本地私密配置（nexus token、路径等） | 本地管理，不提交 |
 
@@ -28,7 +28,7 @@
 本地文件参考 `sh/` 目录下的 `.example` 文件：
 - `sh/_secrets.config.example` → `~/.secrets.config`
 - `sh/_local.zshrc.example` → `~/.local.zshrc`
-- `sh/_local.gitconfig.example` → `~/.local.gitconfig`
+- `git/_local.gitconfig.example` → `~/.local.gitconfig`
 
 ### zshrc 特性
 
@@ -60,7 +60,7 @@ cp sh/_local.zshrc.example ~/.local.zshrc
 vim ~/.local.zshrc  # 按需修改
 
 # 3. 配置本地 git 配置
-cp sh/_local.gitconfig.example ~/.local.gitconfig
+cp git/_local.gitconfig.example ~/.local.gitconfig
 vim ~/.local.gitconfig  # 填入实际值
 ```
 
@@ -83,11 +83,11 @@ dotfiles/
 ├── link.sh              # 软链脚本
 ├── git/
 │   ├── _gitconfig       # git 全局配置
+│   ├── _local.gitconfig.example  # 本地配置参考
 │   └── _git-completion.bash
 ├── sh/
 │   ├── _secrets.config.example
-│   ├── _local.zshrc.example
-│   └── _local.gitconfig.example
+│   └── _local.zshrc.example
 ├── vim/
 │   ├── _vimrc
 │   ├── plugins.vim

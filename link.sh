@@ -31,5 +31,22 @@ ln -sf $PWD/git/_git-completion.bash ~/.git-completion.bash
 ln -sf $PWD/git/_gitconfig ~/.gitconfig
 
 ln -sf $PWD/zsh/_zshrc ~/.zshrc
-ln -sf $PWD/sh/_shrc.local ~/.shrc.local
 ln -sf $PWD/zsh/agnoster-rfw.zsh-theme ~/.oh-my-zsh/custom/themes/
+
+# =============================================
+# 重要：需要手动配置的文件
+# =============================================
+echo ""
+echo "=========================================="
+echo "请手动配置以下文件："
+echo ""
+echo "1. ~/.secrets.config - API keys"
+echo "   参考 sh/_secrets.config.example"
+echo ""
+echo "2. ~/.local.zshrc - 本地私密配置"
+echo "   参考 sh/_local.zshrc.example"
+echo ""
+echo "3. ~/.local.gitconfig - 本地 git 配置"
+echo "   参考 sh/_local.gitconfig.example"
+echo "=========================================="
+

@@ -8,9 +8,13 @@ export ZSH=$HOME/.oh-my-zsh
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="spaceship"
-ZSH_THEME="agnoster-rfw"
-#ZSH_THEME="robbyrussell"
+
+# Use agnoster-rfw if starship is not installed, otherwise empty (starship handles prompt)
+if ! command -v starship &> /dev/null; then
+    ZSH_THEME="agnoster-rfw"
+else
+    ZSH_THEME=""
+fi
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -71,8 +75,6 @@ ZSH_THEME="agnoster-rfw"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    #autojump
-    #git
     z
     zsh-autosuggestions
     zsh-syntax-highlighting
@@ -80,42 +82,24 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-#export PATH="/usr/local/opt/gettext/bin:$PATH"
-
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+
+
+# starship - brew install starship
+if command -v starship &> /dev/null; then
+    eval "$(starship init zsh)"
+fi
 
 # Load secrets (keys) - not tracked in git
 [ -f ~/.secrets.config ] && source ~/.secrets.config
 
-[ -f ~/.shrc.local ]
-source ~/.shrc.local
+# =============================================
+# Local config (private - not in git)
+# =============================================
+[ -f ~/.local.zshrc ] && source ~/.local.zshrc
 
+# neovim - brew install neovim && pip install pynvim
 alias vim="nvim"
 
 # proxy list
@@ -144,6 +128,27 @@ export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bot
 # 可选：Homebrew Cask & Services（如果你手动添加过这些 tap）
 export HOMEBREW_CASK_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-cask.git"
 
+# flutter
+export PUB_HOSTED_URL=https://pub.flutter-io.cn
+export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
+
+# opencode
+export PATH="$HOME/.opencode/bin:$PATH"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# bun completions
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+
+# CoPaw
+export PATH="$HOME/.copaw/bin:$PATH"
+
+# claude code
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+
+alias claude-omlx='ANTHROPIC_BASE_URL=http://127.0.0.1:18000 ANTHROPIC_AUTH_TOKEN=omlx ANTHROPIC_DEFAULT_OPUS_MODEL=MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-6bit ANTHROPIC_DEFAULT_SONNET_MODEL=MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-6bit ANTHROPIC_DEFAULT_HAIKU_MODEL=MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-6bit API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude'
 
 function claude-qwen {
     local model="${1:-kimi-k2.5}"
@@ -185,6 +190,81 @@ function claude-qwen {
 alias claude-minimax-27='ANTHROPIC_BASE_URL=https://api.minimaxi.com/anthropic ANTHROPIC_AUTH_TOKEN=$MINIMAX_API_KEY ANTHROPIC_MODEL=MiniMax-M2.7 ANTHROPIC_SMALL_FAST_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_SONNET_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_OPUS_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_HAIKU_MODEL=MiniMax-M2.7 API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude --dangerously-skip-permissions'
 
 # OpenClaw Completion
-source "/Users/meow/.openclaw/completions/openclaw.zsh"
+[ -s "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"
 
+# =============================================
+# General shell config (merged from _shrc.local)
+# =============================================
+
+# 带颜色的ls，并显示目录
+alias ls='ls -Gp'
+alias datetime='date +%Y-%m-%d\ %H:%M:%S'
+alias timestamp='date +%s'
+
+# Android NDK/SDK
+export NDKROOT=$HOME/Library/Android/sdk/ndk/23.1.7779620
+export ANDROID_NDK=${NDKROOT}
+export ANDROID_SDK=$HOME/Library/Android/sdk
+export JAVA_HOME=`/usr/libexec/java_home`
+export PATH=$PATH:$NDKROOT:$ANDROID_SDK:$JAVA_HOME
+export PATH=$PATH:$ANDROID_SDK/emulator:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools:$ANDROID_SDK/tools/bin
+export PATH=$PATH:$ANDROID_SDK/build-tools/29.0.3
+export PATH=$PATH:$NDKROOT/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64/bin
+
+# jdk8
+alias jdk8="export JAVA_HOME=`/usr/libexec/java_home -v1.8.0_372`"
+
+# macos 应用签名
+alias xsign="sudo codesign --force --deep --sign -"
+
+# Gtags
+export GTAGSLABEL=pygments
+export GTAGSCONF="$HOME/.globalrc"
+
+# Trash - brew install trash
+export PATH="/usr/local/opt/trash/bin:$PATH"
+alias rm='trash'
+
+# pyenv (for YCM)
+export PYTHON_CONFIGURE_OPTS="--with-openssl=$(brew --prefix openssl) --enable-framework"
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+
+# pyenv-install-fast
+pyenv-install-fast() {
+  local version=$1
+  if [[ -z "$version" ]]; then
+    echo "Usage: pyenv-install-fast <version>"
+    return 1
+  fi
+  local url="https://repo.huaweicloud.com/python/$version/Python-$version.tar.xz"
+  echo "Downloading from: $url"
+  wget "$url" -P ~/.pyenv/cache/ || { echo "Download failed!"; return 1; }
+  pyenv install "$version"
+}
+
+# HarmonyOS / DevEco
+export DEVECO_HOME="/Applications/DevEco-Studio.app/Contents"
+export HARMONYOS_SDK="$DEVECO_HOME/sdk"
+export HM_TOOLSCHAINS="$HARMONYOS_SDK/default/openharmony/toolchains"
+export PATH="$HARMONYOS_SDK/default/openharmony/toolchains/:$PATH"
+export PATH="$HOME/devkits/harmonyos/command-line-tools/bin":$PATH
+
+# jeb & apktool
+export PATH="$HOME/devkits/jeb35-qihoo:$PATH"
+export PATH="$HOME/devkits/apktool:$PATH"
+
+# ollama
+OLLAMA_HOST=127.0.0.1
+
+# llama.cpp
+export PATH="$HOME/llm/llama.cpp/build/bin:$PATH"
+export DYLD_LIBRARY_PATH="$LLAMA_CPP_DIR/build/bin:$DYLD_LIBRARY_PATH"
+export PATH="$HOME/llm/bin:$PATH"
+
+# uv、uvx、poetry
 . "$HOME/.local/bin/env"
+
+# uv 源 (清华镜像)
+export UV_DEFAULT_INDEX=https://pypi.tuna.tsinghua.edu.cn/simple
+export UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple

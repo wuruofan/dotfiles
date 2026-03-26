@@ -4,7 +4,7 @@ set nocompatible
 
 " Neovim Python provider - pynvim installed via pip3 --user
 if has('nvim')
-  let g:python3_host_prog = '/usr/local/bin/python3'
+  let g:python3_host_prog = substitute(system('pyenv which python3'), '\n', '', '')
 endif
 
 let $VIMHOME = expand("$HOME/.vim")

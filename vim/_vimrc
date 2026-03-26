@@ -2,7 +2,7 @@
 " possible, as it has side effects.
 set nocompatible
 
-" Neovim Python provider - pynvim installed via pip3 --user
+" Neovim Python provider - pip install pynvim
 if has('nvim')
   let g:python3_host_prog = substitute(system('pyenv which python3'), '\n', '', '')
 endif
@@ -520,6 +520,9 @@ nmap <F3> :TagbarToggle<CR>
 
 "syntax hightlight
 syntax enable
+
+"python
+let g:python3_host_prog='~/.pyenv/shims/python'
 
 " YouCompleteMe
 "设置全局配置文件的路径

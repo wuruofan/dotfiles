@@ -1,0 +1,25 @@
+# 本地 git 配置 - 不提交 git
+# 复制此文件到 ~/.local.gitconfig
+
+# 用户身份
+[user]
+	name = YOUR_NAME
+	email = YOUR_EMAIL
+
+# git hooks 路径
+[core]
+	hooksPath = ~/workspace/git-hooks/hooks
+
+# GitLab 认证
+[url "http://oauth2:YOUR_TOKEN@gitlab.chinastock.com.cn"]
+	insteadof = http://gitlab.chinastock.com.cn
+
+# GitHub 代理
+[url "https://gh-proxy.org/https://github.com/"]
+	insteadof = https://github.com/
+
+# Homebrew Taps - 避免全局 hook 导致 git-lfs hook 不生效
+[includeIf "gitdir:/opt/homebrew/Library/Taps/"]
+	path = ~/.gitconfig-homebrew-taps
+[includeIf "gitdir:/usr/local/Homebrew/Library/Taps/"]
+	path = ~/.gitconfig-homebrew-taps

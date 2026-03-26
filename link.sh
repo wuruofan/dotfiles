@@ -27,6 +27,10 @@ ln -sf $PWD/vim/plugins.vim ~/.vim/plugins.vim
 mkdir -p ~/.config/nvim/
 ln -sf $PWD/vim/nvim/init.vim ~/.config/nvim/
 
+if [ -f ~/.gitconfig ]; then
+    mv ~/.gitconfig ~/.gitconfig.orig
+fi
+
 ln -sf $PWD/git/_git-completion.bash ~/.git-completion.bash
 ln -sf $PWD/git/_gitconfig ~/.gitconfig
 

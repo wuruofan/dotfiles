@@ -29,8 +29,8 @@ Plug 'Valloric/ListToggle'
 Plug 'tenfyzhong/CompleteParameter.vim'
 
 " 代码模版
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
 
 " 作者信息
 Plug 'nine2/vim-copyright'
@@ -42,7 +42,9 @@ Plug 'neomake/neomake'
 
 " Gtags
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'skywind3000/gutentags_plus'
+"cscope在最新neovim已移除，改为使用LSP
+"https://github.com/skywind3000/gutentags_plus/issues/48#issuecomment-1403119827
+"Plug 'skywind3000/gutentags_plus'
 Plug 'skywind3000/vim-preview'
 
 " tags导航栏

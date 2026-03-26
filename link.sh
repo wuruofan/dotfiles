@@ -51,6 +51,6 @@ echo "2. ~/.local.zshrc - 本地私密配置"
 echo "   参考 sh/_local.zshrc.example"
 echo ""
 echo "3. ~/.local.gitconfig - 本地 git 配置"
-echo "   参考 sh/_local.gitconfig.example"
+echo "   参考 git/_local.gitconfig.example"
 echo "=========================================="
 

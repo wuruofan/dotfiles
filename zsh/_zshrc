@@ -252,6 +252,7 @@ export PATH="$HARMONYOS_SDK/default/openharmony/toolchains/:$PATH"
 export PATH="$HOME/devkits/harmonyos/command-line-tools/bin":$PATH
 
 # jeb & apktool
+export PATH="$HOME/devkits/bin:$PATH"
 export PATH="$HOME/devkits/jeb35-qihoo:$PATH"
 export PATH="$HOME/devkits/apktool:$PATH"
 

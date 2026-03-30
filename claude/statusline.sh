@@ -1,5 +1,6 @@
 #!/bin/bash
 # Claude Code Status Line - 分隔符风格 + 渐变进度条
+# 自动检测 llama-server 配置，无需额外环境变量
 
 input=$(cat)
 
@@ -7,15 +8,101 @@ cwd=$(echo "$input" | jq -r '.workspace.current_dir // empty')
 used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 current_usage=$(echo "$input" | jq -r '.context_window.current_usage // empty')
 
-# 优先从 llama-server 获取真实的 context 大小（如果配置了 LLAMA_SERVER_URL）
-if [ -n "$LLAMA_SERVER_URL" ]; then
-    llama_ctx=$(curl -s "${LLAMA_SERVER_URL}/props" 2>/dev/null | jq -r '.default_generation_settings.params.n_ctx // empty')
+# 从 Claude Code 配置中检测 llama-server 地址
+detect_llama_server() {
+    local server_url=""
+
+    # 1. 尝试从 ANTHROPIC_BASE_URL 解析（Claude Code 本地模式的标准变量）
+    if [ -n "$ANTHROPIC_BASE_URL" ]; then
+        # 提取主机和端口，去掉 /v1 等路径
+        server_url=$(echo "$ANTHROPIC_BASE_URL" | sed -E 's|/v1/?$||' | sed -E 's|/$||')
+        # 验证是否是本地地址
+        if echo "$server_url" | grep -qE '^http://(localhost|127\.0\.0\.1)'; then
+            echo "$server_url"
+            return
+        fi
+    fi
+
+    # 2. 检查常见的 llama-server 端口
+    local ports=(8080 8081 8082 8000 3000)
+    for port in "${ports[@]}"; do
+        if curl -s "http://127.0.0.1:${port}/health" >/dev/null 2>&1 || \
+           curl -s "http://localhost:${port}/health" >/dev/null 2>&1; then
+            echo "http://127.0.0.1:${port}"
+            return
+        fi
+    done
+
+    echo ""
+}
+
+# 从 llama-server 获取 context 大小（带缓存）
+get_llama_context() {
+    local server_url=$1
+    local cache_file="/tmp/claude_code_llama_ctx_$(echo "$server_url" | tr '/:' '_').cache"
+    local cache_ttl=300  # 5分钟缓存
+
+    # 检查缓存
+    if [ -f "$cache_file" ]; then
+        local cache_age=$(($(date +%s) - $(stat -c %Y "$cache_file" 2>/dev/null || stat -f %m "$cache_file" 2>/dev/null || echo 0)))
+        if [ "$cache_age" -lt "$cache_ttl" ]; then
+            cat "$cache_file" 2>/dev/null
+            return
+        fi
+    fi
+
+    local ctx=""
+
+    # 尝试 /props 端点（llama.cpp server 标准端点）
+    if [ -z "$ctx" ] || [ "$ctx" = "null" ]; then
+        ctx=$(curl -s "${server_url}/props" 2>/dev/null | jq -r '.default_generation_settings.n_ctx // .default_generation_settings.params.n_ctx // empty')
+    fi
+
+    # 尝试 /v1/models 端点（OpenAI 兼容）
+    if [ -z "$ctx" ] || [ "$ctx" = "null" ]; then
+        ctx=$(curl -s "${server_url}/v1/models" 2>/dev/null | jq -r '.data[0].meta.n_ctx // .data[].meta.n_ctx // empty')
+    fi
+
+    # 尝试 /slots 端点（llama.cpp 内部状态）
+    if [ -z "$ctx" ] || [ "$ctx" = "null" ]; then
+        ctx=$(curl -s "${server_url}/slots" 2>/dev/null | jq -r '.[0].n_ctx // .[].n_ctx // empty')
+    fi
+
+    # 写入缓存
+    if [ -n "$ctx" ] && [ "$ctx" != "null" ]; then
+        echo "$ctx" > "$cache_file" 2>/dev/null
+    fi
+
+    echo "$ctx"
+}
+
+# 主逻辑：获取 total_tokens
+total_tokens=""
+
+# 首先尝试从 llama-server 获取
+llama_server_url=$(detect_llama_server)
+if [ -n "$llama_server_url" ]; then
+    llama_ctx=$(get_llama_context "$llama_server_url")
+    if [ -n "$llama_ctx" ] && [ "$llama_ctx" != "null" ] && [ "$llama_ctx" -gt 0 ] 2>/dev/null; then
+        total_tokens=$llama_ctx
+    fi
 fi
-if [ -n "$llama_ctx" ] && [ "$llama_ctx" != "null" ]; then
-    total_tokens=$llama_ctx
-else
-    # 回退到 Claude Code 提供的值（第三方 API 或官方 Claude）
+
+# 回退到 Claude Code 提供的值
+if [ -z "$total_tokens" ] || [ "$total_tokens" = "null" ]; then
     total_tokens=$(echo "$input" | jq -r '.context_window.context_window_size // empty')
+fi
+
+# 如果还是没有，使用常见默认值
+if [ -z "$total_tokens" ] || [ "$total_tokens" = "null" ]; then
+    # 从模型名推断常见 context 大小
+    model_id=$(echo "$input" | jq -r '.model.id // empty')
+    case "$model_id" in
+        *"8b"*|*"9b"*) total_tokens=32768 ;;
+        *"14b"*|*"32b"*) total_tokens=65536 ;;
+        *"70b"*|*"100b"*) total_tokens=131072 ;;
+        *) total_tokens=32768 ;;  # 默认 32k
+    esac
 fi
 
 model=$(echo "$input" | jq -r '.model.display_name // .model.id // "unknown"')
@@ -45,19 +132,18 @@ current_dir=$(basename "$cwd" 2>/dev/null || echo "?")
 branch=$(git branch --show-current 2>/dev/null | head -c15)
 [ -z "$branch" ] && branch="no-git"
 
-# 3. 模型名（简化处理，移除 claude- 前缀如果太长）
+# 3. 模型名（简化处理）
 model_display="$model"
 if [ ${#model} -gt 20 ]; then
     model_display=$(echo "$model" | sed 's/^claude-//')
 fi
 
-# 4. 渐变进度条（根据百分比改变颜色）
+# 4. 渐变进度条
 bar_length=10
 filled=$((used_pct * bar_length / 100))
 [ $filled -gt $bar_length ] && filled=$bar_length
 empty=$((bar_length - filled))
 
-# 渐变：0-30% 绿色, 31-70% 黄色, 71-100% 红色
 if [ "$used_pct" -le 30 ]; then
     FILLED_COLOR=$GREEN
 elif [ "$used_pct" -le 70 ]; then
@@ -66,7 +152,6 @@ else
     FILLED_COLOR=$RED
 fi
 
-# 未填充部分用灰色
 bar="${FILLED_COLOR}"
 for ((i=0; i<filled; i++)); do bar+="█"; done
 bar+="${GRAY}"
@@ -108,7 +193,7 @@ if [ -n "$git_status" ]; then
     modified=$(echo "$git_status" | grep -c "^.M" 2>/dev/null || echo 0)
     deleted=$(echo "$git_status" | grep -c "^.D" 2>/dev/null || echo 0)
     untracked=$(echo "$git_status" | grep -c "^??" 2>/dev/null || echo 0)
-    
+
     git_str=""
     [ "$staged" -gt 0 ] && git_str+="${GREEN}+${staged}${RESET} "
     [ "$modified" -gt 0 ] && git_str+="${YELLOW}~${modified}${RESET} "
@@ -122,12 +207,11 @@ fi
 # 分隔符
 SEP="${GRAY}•${RESET}"
 
-# 布局：目录(分支) • 模型 [进度条] 百分比(总大小) • Token • Git
+# 布局
 output="${BOLD}${CYAN}${current_dir}${RESET} "
 output+="${MAGENTA}( ${branch})${RESET} "
 output+="${GRAY}󰚩  ${model_display}${RESET} "
 output+="${bar} "
-# 修改这里：百分比后面加上总 context 大小
 if [ -n "$total_fmt" ]; then
     output+="${GRAY}${used_pct}%(${total_fmt})${RESET} "
 else

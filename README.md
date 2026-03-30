@@ -92,11 +92,12 @@ Claude Code 自定义状态栏脚本，显示目录、分支、模型、context 
 }
 ```
 
-**环境变量：**
+**功能：**
 
-| 变量 | 作用 |
-|------|------|
-| `LLAMA_SERVER_URL` | 从 llama-server 获取真实 context 大小（可选，默认使用 Claude Code 提供的值） |
+- 自动检测本地 llama-server（扫描常见端口或从 `ANTHROPIC_BASE_URL` 解析）
+- 从 `/props`、`/v1/models`、`/slots` 端点获取真实 context 大小
+- 5分钟缓存，避免频繁请求
+- 无法检测时回退到 Claude Code 提供的值或根据模型名推断
 
 ---
 

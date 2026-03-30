@@ -8,30 +8,19 @@ cwd=$(echo "$input" | jq -r '.workspace.current_dir // empty')
 used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 current_usage=$(echo "$input" | jq -r '.context_window.current_usage // empty')
 
-# 从 Claude Code 配置中检测 llama-server 地址
+# 从 Claude Code 配置中检测本地模型服务地址
 detect_llama_server() {
-    local server_url=""
-
-    # 1. 尝试从 ANTHROPIC_BASE_URL 解析（Claude Code 本地模式的标准变量）
+    # 从 ANTHROPIC_BASE_URL 提取 base URL（Claude Code 本地模式的标准变量）
+    # 支持 any-scale://host:port 或 http://host:port 格式
     if [ -n "$ANTHROPIC_BASE_URL" ]; then
-        # 提取主机和端口，去掉 /v1 等路径
-        server_url=$(echo "$ANTHROPIC_BASE_URL" | sed -E 's|/v1/?$||' | sed -E 's|/$||')
+        # 去掉 /v1、/v1/ 等路径和末尾斜杠
+        local server_url=$(echo "$ANTHROPIC_BASE_URL" | sed -E 's|/v1/?$||' | sed -E 's|/$||')
         # 验证是否是本地地址
-        if echo "$server_url" | grep -qE '^http://(localhost|127\.0\.0\.1)'; then
+        if echo "$server_url" | grep -qE '^(http|https|any-scale)://(localhost|127\.0\.0\.1)'; then
             echo "$server_url"
             return
         fi
     fi
-
-    # 2. 检查常见的 llama-server 端口
-    local ports=(8080 8081 8082 8000 3000)
-    for port in "${ports[@]}"; do
-        if curl -s "http://127.0.0.1:${port}/health" >/dev/null 2>&1 || \
-           curl -s "http://localhost:${port}/health" >/dev/null 2>&1; then
-            echo "http://127.0.0.1:${port}"
-            return
-        fi
-    done
 
     echo ""
 }

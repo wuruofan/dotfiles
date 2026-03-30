@@ -148,6 +148,8 @@ export PATH="$HOME/.copaw/bin:$PATH"
 # claude code
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 export CLAUDE_CODE_NO_CO_AUTHORED_COMMITS=1
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+export CLAUDE_CODE_ENABLE_AUTONOMOUS=1  # 让 Claude 自主决策
 
 alias claude-omlx='ANTHROPIC_BASE_URL=http://127.0.0.1:18000 ANTHROPIC_AUTH_TOKEN=omlx ANTHROPIC_DEFAULT_OPUS_MODEL=MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-6bit ANTHROPIC_DEFAULT_SONNET_MODEL=MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-6bit ANTHROPIC_DEFAULT_HAIKU_MODEL=MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-6bit API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude'
 
@@ -189,6 +191,9 @@ function claude-qwen {
 
 # MiniMax-M2.7 via minimax API (keys in ~/.secrets.config)
 alias claude-minimax-27='ANTHROPIC_BASE_URL=https://api.minimaxi.com/anthropic ANTHROPIC_AUTH_TOKEN=$MINIMAX_API_KEY ANTHROPIC_MODEL=MiniMax-M2.7 ANTHROPIC_SMALL_FAST_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_SONNET_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_OPUS_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_HAIKU_MODEL=MiniMax-M2.7 API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude --dangerously-skip-permissions'
+
+# mimo v2 (暂时注释)
+# alias claude-mimo='ANTHROPIC_BASE_URL=https://api.xiaomimimo.com/anthropic ANTHROPIC_AUTH_TOKEN=$MIMO_API_KEY ANTHROPIC_MODEL=mimo-v2-pro ANTHROPIC_SMALL_FAST_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_SONNET_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_OPUS_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_HAIKU_MODEL=mimo-v2-pro API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude --dangerously-skip-permissions'
 
 # OpenClaw Completion
 [ -s "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"

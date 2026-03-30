@@ -77,6 +77,29 @@ git pull
 
 ---
 
+## 可选配置
+
+### @claude/statusline.sh
+
+Claude Code 自定义状态栏脚本，显示目录、分支、模型、context 使用率、token 统计和 git 状态。
+
+**配置方法：**
+
+```bash
+# 在 ~/.claude/settings.json 中添加
+{
+  "statusline": "/Users/wuruofan/devkits/dotfiles/claude/statusline.sh"
+}
+```
+
+**环境变量：**
+
+| 变量 | 作用 |
+|------|------|
+| `LLAMA_SERVER_URL` | 从 llama-server 获取真实 context 大小（可选，默认使用 Claude Code 提供的值） |
+
+---
+
 ## 目录结构
 
 ```

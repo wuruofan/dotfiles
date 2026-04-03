@@ -40,8 +40,8 @@ Plug 'nine2/vim-copyright'
 " 异步编译 代码检查
 Plug 'neomake/neomake'
 
-" Gtags
-Plug 'ludovicchabant/vim-gutentags'
+" Gtags (已禁用)
+" Plug 'ludovicchabant/vim-gutentags'
 "cscope在最新neovim已移除，改为使用LSP
 "https://github.com/skywind3000/gutentags_plus/issues/48#issuecomment-1403119827
 "Plug 'skywind3000/gutentags_plus'

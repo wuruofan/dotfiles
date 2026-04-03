@@ -102,10 +102,13 @@ fi
 # neovim - brew install neovim && pip install pynvim
 alias vim="nvim"
 
+# 加载代理配置
+[ -f ~/.proxy_env ] && source ~/.proxy_env
+
 # proxy list
-alias proxy='export https_proxy=http://127.0.0.1:33210 http_proxy=http://127.0.0.1:33210 all_proxy=socks5://127.0.0.1:33211'
+alias proxy='export https_proxy=http://127.0.0.1:7897 http_proxy=http://127.0.0.1:7897 all_proxy=socks5://127.0.0.1:7897'
 #alias proxy='export all_proxy=http://127.0.0.1:54215'
-alias unproxy='unset all_proxy'
+alias unproxy='unset all_proxy https_proxy http_proxy all_proxy'
 
 # auto correct
 zstyle ':completion:incremental:*' completer _complete _correct

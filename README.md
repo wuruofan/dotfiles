@@ -79,6 +79,37 @@ git pull
 
 ## 可选配置
 
+### @claude/AGENTS.md + link_agents_md.sh
+
+全局 AI 编码审计协议模板，兼容 Claude Code 和 OpenCode。在项目根目录创建 `AGENTS.md` 软链接后，Agent 会在每次代码修改前自动激活审计矩阵。
+
+**文件说明：**
+
+- `AGENTS.md` - 协议模板
+- `link_agents_md.sh` - 快速创建软链接的脚本（在当前项目根目录创建 `AGENTS.md` → `~/AGENTS.md`）
+
+**配置方法：**
+
+```bash
+# 1. 在 ~/.zshrc 中已配置 claude 函数自动加载 AGENTS.md
+#    （仅在 ~/AGENTS.md 存在时生效，两台电脑共享 dotfiles 时无副作用）
+
+# 2. 在项目目录中创建软链接
+cd ~/path-to-project
+~/devkits/dotfiles/claude/link_agents_md.sh
+
+# 或手动创建
+ln -sf ~/AGENTS.md ./AGENTS.md
+```
+
+**协议内容：**
+
+- **第一阶段**：逻辑审计矩阵（Pre-flight Check）- 修改代码前必须输出审计表格
+- **第二阶段**：确定性交付（Verified Delivery）- 修改后验证逻辑正确性
+- **行为禁令**：禁止自信提交、局部失明、重构式修复
+
+---
+
 ### @claude/statusline.sh
 
 Claude Code 自定义状态栏脚本，显示目录、分支、模型、context 使用率、token 统计和 git 状态。
@@ -119,7 +150,12 @@ dotfiles/
 │   ├── _vimrc
 │   ├── plugins.vim
 │   └── nvim/init.vim
-└── zsh/
-    ├── _zshrc
-    └── agnoster-rfw.zsh-theme
+├── zsh/
+│   ├── _zshrc
+│   └── agnoster-rfw.zsh-theme
+└── claude/
+    ├── AGENTS.md        # 全局 AI 编码审计协议模板
+    ├── link_agents_md.sh  # 项目 AGENTS.md 软链接脚本
+    ├── settings.json
+    └── statusline.sh
 ```

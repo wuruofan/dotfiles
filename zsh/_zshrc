@@ -154,7 +154,13 @@ export CLAUDE_CODE_ATTRIBUTION_HEADER=0 # 避免 kv 失效
 export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 # 开启 agent teams
 export CLAUDE_CODE_ENABLE_AUTONOMOUS=1  # 让 Claude 自主决策
 
-alias claude='claude --dangerously-skip-permissions'
+claude() {
+  if [[ -f ~/AGENTS.md ]]; then
+    command claude --system-prompt-file ~/AGENTS.md --dangerously-skip-permissions "$@"
+  else
+    command claude --dangerously-skip-permissions "$@"
+  fi
+}
 
 alias claude-omlx="ANTHROPIC_BASE_URL='http://127.0.0.1:18000' ANTHROPIC_AUTH_TOKEN='omlx' ANTHROPIC_DEFAULT_OPUS_MODEL='MLX-Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-4bit' ANTHROPIC_DEFAULT_SONNET_MODEL='MLX-Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-4bit' ANTHROPIC_DEFAULT_HAIKU_MODEL='MLX-Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-4bit' API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude"
 

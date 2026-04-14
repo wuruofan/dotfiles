@@ -156,7 +156,7 @@ export CLAUDE_CODE_ENABLE_AUTONOMOUS=1  # 让 Claude 自主决策
 
 claude() {
   if [[ -f ~/AGENTS.md ]]; then
-    command claude --system-prompt-file ~/AGENTS.md --dangerously-skip-permissions "$@"
+    command claude --append-system-prompt-file ~/AGENTS.md --dangerously-skip-permissions "$@"
   else
     command claude --dangerously-skip-permissions "$@"
   fi
@@ -204,10 +204,10 @@ function claude-qwen {
 
 
 # MiniMax-M2.7 via minimax API (keys in ~/.secrets.config)
-alias claude-minimax-27='ANTHROPIC_BASE_URL=https://api.minimaxi.com/anthropic ANTHROPIC_AUTH_TOKEN=$MINIMAX_API_KEY ANTHROPIC_MODEL=MiniMax-M2.7 ANTHROPIC_SMALL_FAST_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_SONNET_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_OPUS_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_HAIKU_MODEL=MiniMax-M2.7 API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude --dangerously-skip-permissions'
+alias claude-minimax-27='ANTHROPIC_BASE_URL=https://api.minimaxi.com/anthropic ANTHROPIC_AUTH_TOKEN=$MINIMAX_API_KEY ANTHROPIC_MODEL=MiniMax-M2.7 ANTHROPIC_SMALL_FAST_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_SONNET_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_OPUS_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_HAIKU_MODEL=MiniMax-M2.7 API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude'
 
 # mimo v2 (暂时注释)
-# alias claude-mimo='ANTHROPIC_BASE_URL=https://api.xiaomimimo.com/anthropic ANTHROPIC_AUTH_TOKEN=$MIMO_API_KEY ANTHROPIC_MODEL=mimo-v2-pro ANTHROPIC_SMALL_FAST_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_SONNET_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_OPUS_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_HAIKU_MODEL=mimo-v2-pro API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude --dangerously-skip-permissions'
+# alias claude-mimo='ANTHROPIC_BASE_URL=https://api.xiaomimimo.com/anthropic ANTHROPIC_AUTH_TOKEN=$MIMO_API_KEY ANTHROPIC_MODEL=mimo-v2-pro ANTHROPIC_SMALL_FAST_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_SONNET_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_OPUS_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_HAIKU_MODEL=mimo-v2-pro API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude'
 
 # OpenClaw Completion
 [ -s "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"

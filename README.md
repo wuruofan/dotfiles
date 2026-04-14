@@ -8,7 +8,7 @@
 |------|------|---------|
 | `zsh/_zshrc` | 跨机器通用配置（PATH、alias、函数等） | 提交 git |
 | `~/.gitconfig` | 跨机器通用 git 配置 | 提交 git |
-| `~/.local.gitconfig` | 本地 git 配置（hooksPath、gitlab token、github 代理等） | 本地管理，不提交 |
+| `~/.local.gitconfig` | 本地 git 配置（hooksPath、gitlab token、github 代理、按仓库区分用户身份等） | 本地管理，不提交 |
 | `~/.secrets.config` | API keys（MINIMAX_API_KEY 等） | 本地管理，不提交 |
 | `~/.local.zshrc` | 本地私密配置（nexus token、路径等） | 本地管理，不提交 |
 

@@ -1,10 +1,17 @@
 # 本地 git 配置 - 不提交 git
 # 复制此文件到 ~/.local.gitconfig
 
-# 用户身份
+# 用户身份（默认）
 [user]
 	name = YOUR_NAME
 	email = YOUR_EMAIL
+
+# 按仓库地址区分用户身份（可选）
+# 例如公司 GitLab 用公司邮箱，其他用个人邮箱
+#[includeIf "hasconfig:remote.*.url:**gitlab.chinastock.com.cn/**"]
+#	[user]
+#		name = COMPANY_NAME
+#		email = COMPANY_EMAIL
 
 # git hooks 路径（可选）
 #[core]

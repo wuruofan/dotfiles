@@ -110,6 +110,28 @@ ln -sf ~/AGENTS.md ./AGENTS.md
 
 ---
 
+### @claude/skills + link_skills.sh
+
+自定义 Claude Code skills，存放在 `claude/skills/` 目录下，通过 `link_skills.sh` 链接到 `~/.claude/skills/`。
+
+**文件说明：**
+
+- `skills/` - skill 目录，每个 skill 一个子目录
+- `link_skills.sh` - 批量创建软链接脚本
+
+**当前 skills：**
+
+- `web-fetch-proxy` - 网页 fetch 代理，自动使用 markdown.new/defuddle/r.jina.ai 绕过域名安全检查
+
+**配置方法：**
+
+```bash
+# 安装新的 skill 后，运行链接脚本
+~/devkits/dotfiles/claude/link_skills.sh
+```
+
+---
+
 ### @claude/statusline.sh
 
 Claude Code 自定义状态栏脚本，显示目录、分支、模型、context 使用率、token 统计和 git 状态。
@@ -156,6 +178,9 @@ dotfiles/
 └── claude/
     ├── AGENTS.md        # 全局 AI 编码审计协议模板
     ├── link_agents_md.sh  # 项目 AGENTS.md 软链接脚本
+    ├── link_skills.sh     # skills 软链接脚本
     ├── settings.json
-    └── statusline.sh
+    ├── statusline.sh
+    └── skills/            # 自定义 skills
+        └── web-fetch-proxy/
 ```

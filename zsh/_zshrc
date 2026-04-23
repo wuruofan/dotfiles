@@ -148,40 +148,15 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # CoPaw
 export PATH="$HOME/.copaw/bin:$PATH"
 
+# dotfiles 目录 (相对路径定位基础)
+export DOTFILES_DIR="${DOTFILES_DIR:-$(cd "$(dirname "$(readlink -f ~/.zshrc)")/.." && pwd)}"
+
 # claude code 配置 (跨设备共用)
-export CLAUDE_CONF_DIR="$(dirname $(realpath "$0"))/../claude"
+export CLAUDE_CONF_DIR="$DOTFILES_DIR/claude"
 [ -f "$CLAUDE_CONF_DIR/claude-code.shrc" ] && source "$CLAUDE_CONF_DIR/claude-code.shrc"
 
-# tmux 封装: 自动找空位，避免 session 冲突
-_tmux_cc_find_name() {
-  local base="$1"
-  local i=1
-  while tmux has-session -t "${base}_${i}" 2>/dev/null; do
-    ((i++))
-  done
-  echo "${base}_${i}"
-}
-
-tmux-cc-m27() {
-  if ! command -v tmux >/dev/null 2>&1; then
-    echo "tmux 未安装"
-    return 1
-  fi
-  local name="$(_tmux_cc_find_name "m27")"
-  tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-minimax-27"
-  tmux attach -t "$name"
-}
-
-tmux-cc-qwen() {
-  if ! command -v tmux >/dev/null 2>&1; then
-    echo "tmux 未安装"
-    return 1
-  fi
-  local name="$(_tmux_cc_find_name "qwen")"
-  local model="${1:-kimi-k2.5}"
-  tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-qwen $model"
-  tmux attach -t "$name"
-}
+# tmux 配置
+source "$DOTFILES_DIR/tmux/tmux.shrc"
 
 # OpenClaw Completion
 [ -s "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"
@@ -200,10 +175,7 @@ export NDKROOT=$HOME/Library/Android/sdk/ndk/23.1.7779620
 export ANDROID_NDK=${NDKROOT}
 export ANDROID_SDK=$HOME/Library/Android/sdk
 export JAVA_HOME=`/usr/libexec/java_home`
-export PATH=$PATH:$NDKROOT:$ANDROID_SDK:$JAVA_HOME
-export PATH=$PATH:$ANDROID_SDK/emulator:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools:$ANDROID_SDK/tools/bin
-export PATH=$PATH:$ANDROID_SDK/build-tools/29.0.3
-export PATH=$PATH:$NDKROOT/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64/bin
+export PATH="${NDKROOT}:${ANDROID_SDK}:${JAVA_HOME}:${ANDROID_SDK}/emulator:${ANDROID_SDK}/platform-tools:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/build-tools/29.0.3:${NDKROOT}/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64/bin:$PATH"
 
 # jdk8
 alias jdk8="export JAVA_HOME=`/usr/libexec/java_home -v1.8.0_372`"
@@ -241,8 +213,7 @@ pyenv-install-fast() {
 export DEVECO_HOME="/Applications/DevEco-Studio.app/Contents"
 export HARMONYOS_SDK="$DEVECO_HOME/sdk"
 export HM_TOOLSCHAINS="$HARMONYOS_SDK/default/openharmony/toolchains"
-export PATH="$HARMONYOS_SDK/default/openharmony/toolchains/:$PATH"
-export PATH="$HOME/devkits/harmonyos/command-line-tools/bin":$PATH
+export PATH="$PATH:$HOME/devkits/harmonyos/command-line-tools/bin:$HM_TOOLSCHAINS/"
 
 # jeb & apktool
 export PATH="$HOME/devkits/bin:$PATH"

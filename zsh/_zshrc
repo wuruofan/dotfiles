@@ -148,66 +148,40 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # CoPaw
 export PATH="$HOME/.copaw/bin:$PATH"
 
-# claude code
-export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-export CLAUDE_CODE_ATTRIBUTION_HEADER=0 # 避免 kv 失效
-export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 # 开启 agent teams
-export CLAUDE_CODE_ENABLE_AUTONOMOUS=1  # 让 Claude 自主决策
+# claude code 配置 (跨设备共用)
+export CLAUDE_CONF_DIR="$(dirname $(realpath "$0"))/../claude"
+[ -f "$CLAUDE_CONF_DIR/claude-code.shrc" ] && source "$CLAUDE_CONF_DIR/claude-code.shrc"
 
-claude() {
-  if [[ -f ~/AGENTS.md ]]; then
-    command claude --append-system-prompt-file ~/AGENTS.md --dangerously-skip-permissions "$@"
-  else
-    command claude --dangerously-skip-permissions "$@"
+# tmux 封装: 自动找空位，避免 session 冲突
+_tmux_cc_find_name() {
+  local base="$1"
+  local i=1
+  while tmux has-session -t "${base}_${i}" 2>/dev/null; do
+    ((i++))
+  done
+  echo "${base}_${i}"
+}
+
+tmux-cc-m27() {
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo "tmux 未安装"
+    return 1
   fi
+  local name="$(_tmux_cc_find_name "m27")"
+  tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-minimax-27"
+  tmux attach -t "$name"
 }
 
-alias claude-omlx="ANTHROPIC_BASE_URL='http://127.0.0.1:18000' ANTHROPIC_AUTH_TOKEN='omlx' ANTHROPIC_DEFAULT_OPUS_MODEL='MLX-Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-4bit' ANTHROPIC_DEFAULT_SONNET_MODEL='MLX-Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-4bit' ANTHROPIC_DEFAULT_HAIKU_MODEL='MLX-Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-4bit' API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude"
-
-alias claude-omlx-9b="ANTHROPIC_BASE_URL='http://127.0.0.1:18000' ANTHROPIC_AUTH_TOKEN='omlx' ANTHROPIC_DEFAULT_OPUS_MODEL='MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-6bit' ANTHROPIC_DEFAULT_SONNET_MODEL='MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-6bit' ANTHROPIC_DEFAULT_HAIKU_MODEL='MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-6bit' API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude"
-
-function claude-qwen {
-    local model="${1:-kimi-k2.5}"
-
-    local valid_models=("MiniMax-M2.5" "kimi-k2.5" "glm-5" "qwen3.5-plus" "glm-4.7" "qwen3-coder-next")
-    local is_valid=false
-
-    for m in "${valid_models[@]}"; do
-        if [[ "$model" == "$m" ]]; then
-            is_valid=true
-            break
-        fi
-    done
-
-    if [[ "$is_valid" == false ]]; then
-        echo "错误: 不支持的模型 '$model'"
-        echo "支持的模型: ${valid_models[*]}"
-        return 1
-    fi
-
-    # 只有在有参数时才 shift
-    if [[ $# -gt 0 ]]; then
-        shift
-    fi
-
-    ANTHROPIC_BASE_URL="https://coding.dashscope.aliyuncs.com/apps/anthropic" \
-    ANTHROPIC_MODEL="$model" \
-    ANTHROPIC_SMALL_FAST_MODEL="$model" \
-    ANTHROPIC_DEFAULT_SONNET_MODEL="$model" \
-    ANTHROPIC_DEFAULT_OPUS_MODEL="$model" \
-    ANTHROPIC_DEFAULT_HAIKU_MODEL="$model" \
-    ANTHROPIC_AUTH_TOKEN="$BAILIAN_API_TOKEN" \
-    API_TIMEOUT_MS="3000000" \
-    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
-    claude "$@"
+tmux-cc-qwen() {
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo "tmux 未安装"
+    return 1
+  fi
+  local name="$(_tmux_cc_find_name "qwen")"
+  local model="${1:-kimi-k2.5}"
+  tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-qwen $model"
+  tmux attach -t "$name"
 }
-
-
-# MiniMax-M2.7 via minimax API (keys in ~/.secrets.config)
-alias claude-minimax-27='ANTHROPIC_BASE_URL=https://api.minimaxi.com/anthropic ANTHROPIC_AUTH_TOKEN=$MINIMAX_API_KEY ANTHROPIC_MODEL=MiniMax-M2.7 ANTHROPIC_SMALL_FAST_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_SONNET_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_OPUS_MODEL=MiniMax-M2.7 ANTHROPIC_DEFAULT_HAIKU_MODEL=MiniMax-M2.7 API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude'
-
-# mimo v2 (暂时注释)
-# alias claude-mimo='ANTHROPIC_BASE_URL=https://api.xiaomimimo.com/anthropic ANTHROPIC_AUTH_TOKEN=$MIMO_API_KEY ANTHROPIC_MODEL=mimo-v2-pro ANTHROPIC_SMALL_FAST_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_SONNET_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_OPUS_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_HAIKU_MODEL=mimo-v2-pro API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude'
 
 # OpenClaw Completion
 [ -s "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"

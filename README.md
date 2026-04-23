@@ -154,7 +154,34 @@ Claude Code 自定义状态栏脚本，显示目录、分支、模型、context 
 
 ---
 
-## 目录结构
+### @tmux
+
+tmux 配置和封装函数，通过 `DOTFILES_DIR` 相对路径加载。
+
+**文件说明：**
+
+- `tmux/_tmux.conf` - tmux 主配置（prefix、vi 风格复制、鼠标等）
+- `tmux/tmux.shrc` - tmux 封装函数（自动找空位避免 session 冲突）
+
+**配置方法：**
+
+```bash
+# ~/.tmux.conf 已通过 link.sh 自动软链接
+# 修改 tmux 配置后，热加载：
+tmux source-file ~/.tmux.conf
+
+# tmux 封装函数（zshrc 中已 source）
+tmux-cc-m27      # 创建 MiniMax-M2.7 Claude session
+tmux-cc-qwen     # 创建 Qwen/Dashscope Claude session
+```
+
+**功能：**
+
+- `tmux-cc-m27` - 在空闲的 m27_N session 中启动 MiniMax-M2.7
+- `tmux-cc-qwen [model]` - 在空闲的 qwen_N session 中启动，支持 model 参数
+- 自动查找空闲 session 名称，避免冲突
+
+---
 
 ```
 dotfiles/
@@ -175,6 +202,9 @@ dotfiles/
 ├── zsh/
 │   ├── _zshrc
 │   └── agnoster-rfw.zsh-theme
+├── tmux/
+│   ├── _tmux.conf        # tmux 配置
+│   └── tmux.shrc        # tmux 函数（自动找空位创建 session）
 └── claude/
     ├── AGENTS.md        # 全局 AI 编码审计协议模板
     ├── link_agents_md.sh  # 项目 AGENTS.md 软链接脚本

@@ -5,37 +5,34 @@
 #   Author        : rf.w
 #   Email         : demonsimon#gmail.com
 #   File Name     : link.sh
-#   Last Modified : 2020-04-13 11:34
 #   Describe      :
 #
 # ====================================================
 
 PWD=`pwd`
 
-if [ -f ~/.vimrc ]; then
-    mv ~/.vimrc ~/.vimrc.orig
-    mv ~/.vim/ ~/.vim.orig/
-fi
+# -------- 备份已有配置 --------
+[ -f ~/.vimrc ] && mv ~/.vimrc ~/.vimrc.orig
+[ -d ~/.vim ] && mv ~/.vim/ ~/.vim.orig/
+[ -f ~/.zshrc ] && mv ~/.zshrc ~/.zshrc.orig
+[ -f ~/.gitconfig ] && mv ~/.gitconfig ~/.gitconfig.orig
+[ -f ~/.tmux.conf ] && mv ~/.tmux.conf ~/.tmux.conf.orig
 
-if [ -f ~/.zshrc ]; then
-    mv ~/.zshrc ~/.zshrc.orig
-fi
+# -------- 建立软链接 --------
+mkdir -p ~/.vim/
+mkdir -p ~/.config/nvim/
+mkdir -p ~/.oh-my-zsh/custom/themes/
 
 ln -sf $PWD/vim/_vimrc ~/.vimrc
-mkdir -p ~/.vim/
 ln -sf $PWD/vim/plugins.vim ~/.vim/plugins.vim
-mkdir -p ~/.config/nvim/
 ln -sf $PWD/vim/nvim/init.vim ~/.config/nvim/
-
-if [ -f ~/.gitconfig ]; then
-    mv ~/.gitconfig ~/.gitconfig.orig
-fi
 
 ln -sf $PWD/git/_git-completion.bash ~/.git-completion.bash
 ln -sf $PWD/git/_gitconfig ~/.gitconfig
 
 ln -sf $PWD/zsh/_zshrc ~/.zshrc
 ln -sf $PWD/zsh/agnoster-rfw.zsh-theme ~/.oh-my-zsh/custom/themes/
+ln -sf $PWD/tmux/_tmux.conf ~/.tmux.conf
 
 # =============================================
 # 重要：需要手动配置的文件
@@ -53,4 +50,3 @@ echo ""
 echo "3. ~/.local.gitconfig - 本地 git 配置"
 echo "   参考 git/_local.gitconfig.example"
 echo "=========================================="
-

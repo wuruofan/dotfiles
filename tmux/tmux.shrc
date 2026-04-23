@@ -1,0 +1,30 @@
+# tmux 封装: 自动找空位，避免 session 冲突
+_tmux_cc_find_name() {
+  local base="$1"
+  local i=1
+  while tmux has-session -t "${base}_${i}" 2>/dev/null; do
+    ((i++))
+  done
+  echo "${base}_${i}"
+}
+
+tmux-cc-m27() {
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo "tmux 未安装"
+    return 1
+  fi
+  local name="$(_tmux_cc_find_name "m27")"
+  tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-minimax-27"
+  tmux attach -t "$name"
+}
+
+tmux-cc-qwen() {
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo "tmux 未安装"
+    return 1
+  fi
+  local name="$(_tmux_cc_find_name "qwen")"
+  local model="${1:-kimi-k2.5}"
+  tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-qwen $model"
+  tmux attach -t "$name"
+}

@@ -112,24 +112,16 @@ ln -sf ~/AGENTS.md ./AGENTS.md
 
 ### @claude/skills
 
-通过 `npx skills` 从 GitHub 安装全局 Claude Code skills（wuruofan/agent-skills）。
+通过 `npx skills` 从 GitHub 安装全局 skills（wuruofan/agent-skills）。
 
-**文件说明：**
-
-- `link_skills.sh` - 调用 `npx skills add` 安装全局 skills 的脚本
-- `skills/` 目录已迁移至独立仓库 [wuruofan/agent-skills](https://github.com/wuruofan/agent-skills)
-
-**当前包含的 skills：**
-
-详见 [wuruofan/agent-skills](https://github.com/wuruofan/agent-skills)
+`skills/` 目录已迁移至独立仓库，请跳转 [agent-skills](https://github.com/wuruofan/agent-skills) 查看。
 
 **配置方法：**
 
 ```bash
 # 运行安装脚本（需要 npx）
 ~/devkits/dotfiles/claude/link_skills.sh
-
-# 或手动安装
+# 或手动
 npx skills add wuruofan/agent-skills -g -y
 ```
 

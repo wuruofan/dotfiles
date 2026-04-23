@@ -110,24 +110,27 @@ ln -sf ~/AGENTS.md ./AGENTS.md
 
 ---
 
-### @claude/skills + link_skills.sh
+### @claude/skills
 
-自定义 Claude Code skills，存放在 `claude/skills/` 目录下，通过 `link_skills.sh` 链接到 `~/.claude/skills/`。
+通过 `npx skills` 从 GitHub 安装全局 Claude Code skills（wuruofan/agent-skills）。
 
 **文件说明：**
 
-- `skills/` - skill 目录，每个 skill 一个子目录
-- `link_skills.sh` - 批量创建软链接脚本
+- `link_skills.sh` - 调用 `npx skills add` 安装全局 skills 的脚本
+- `skills/` 目录已迁移至独立仓库 [wuruofan/agent-skills](https://github.com/wuruofan/agent-skills)
 
-**当前 skills：**
+**当前包含的 skills：**
 
-- `web-fetch-proxy` - 网页 fetch 代理，自动使用 markdown.new/defuddle/r.jina.ai 绕过域名安全检查
+详见 [wuruofan/agent-skills](https://github.com/wuruofan/agent-skills)
 
 **配置方法：**
 
 ```bash
-# 安装新的 skill 后，运行链接脚本
+# 运行安装脚本（需要 npx）
 ~/devkits/dotfiles/claude/link_skills.sh
+
+# 或手动安装
+npx skills add wuruofan/agent-skills -g -y
 ```
 
 ---
@@ -208,9 +211,8 @@ dotfiles/
 └── claude/
     ├── AGENTS.md        # 全局 AI 编码审计协议模板
     ├── link_agents_md.sh  # 项目 AGENTS.md 软链接脚本
-    ├── link_skills.sh     # skills 软链接脚本
+    ├── link_skills.sh     # npx skills 安装脚本
     ├── settings.json
     ├── statusline.sh
-    └── skills/            # 自定义 skills
-        └── web-fetch-proxy/
+    └── claude-code.shrc  # Claude Code 全局配置（API keys、claude 函数等）
 ```

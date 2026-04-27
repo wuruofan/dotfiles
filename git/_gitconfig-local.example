@@ -1,0 +1,21 @@
+# 本地 git 配置 - 不提交 git
+# 复制此文件到 ~/.gitconfig-local
+
+# 用户身份（默认）
+[user]
+	name = YOUR_NAME
+	email = YOUR_EMAIL
+
+# 按仓库路径区分用户身份（可选，推荐 - 隐私性好）
+# 例如公司仓库用公司邮箱，其他用个人邮箱
+#[includeIf "gitdir:~/YOUR_COMPANY_REPO_DIR/**"]
+#	path = ~/.gitconfig-company
+
+# 按仓库地址区分用户身份（可选，灵活性高）
+# 例如公司 GitLab 用公司邮箱，其他用个人邮箱
+#[includeIf "hasconfig:remote.*.url:**YOUR_COMPANY_GIT_URL/**"]
+#	path = ~/.gitconfig-company
+
+# GitHub 代理（可选）
+#[url "https://gh-proxy.org/https://github.com/"]
+#	insteadof = https://github.com/

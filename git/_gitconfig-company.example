@@ -1,0 +1,20 @@
+# 本地 git 公司仓库配置示例（~/.gitconfig-company） - 不提交 git
+# 复制此文件到 ~/.gitconfig-company
+
+# [user]
+#	name = YOUR_NAME
+#	email = YOUR_COMPANY_EMAIL
+
+# GitLab 认证（可选）
+#[url "http://oauth2:YOUR_TOKEN@YOUR_COMPANY_GIT_URL"]
+#	insteadof = http://YOUR_COMPANY_GIT_URL
+
+# git hooks 路径（可选）
+#[core]
+#	hooksPath = ~/workspace/git-hooks/hooks
+
+# Homebrew Taps - 避免全局 hook 导致 git-lfs hook 不生效（可选）
+#[includeIf "gitdir:/opt/homebrew/Library/Taps/"]
+#	path = ~/.gitconfig-homebrew-taps
+#[includeIf "gitdir:/usr/local/Homebrew/Library/Taps/"]
+#	path = ~/.gitconfig-homebrew-taps

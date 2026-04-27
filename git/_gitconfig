@@ -21,13 +21,6 @@
 	excludesfile = ~/.gitignore_global
 	filemode = false
 	editor = nvim
-[difftool "ksdiff"]
-	cmd = ksdiff \"$LOCAL\" \"$REMOTE\"
-[difftool "sourcetree"]
-	cmd = /usr/local/bin/ksdiff -w \"$LOCAL\" \"$REMOTE\"
-[mergetool "sourcetree"]
-	cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-	trustExitCode = true
 [pull]
 	rebase = true
 [init]
@@ -37,6 +30,6 @@
 # Local config (not in git)
 # =============================================
 [include]
-	path = ~/.local.gitconfig
+	path = ~/.gitconfig-local
 [safe]
 	directory = *

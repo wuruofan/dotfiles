@@ -44,7 +44,7 @@ function claude-minimax-27 {
 function claude-qwen {
     local model="${1:-kimi-k2.5}"
 
-    local valid_models=("MiniMax-M2.5" "kimi-k2.5" "glm-5" "qwen3.5-plus" "glm-4.7" "qwen3-coder-next")
+    local valid_models=("MiniMax-M2.5" "kimi-k2.5" "glm-5" "qwen3.5-plus" "qwen3.6-plus" "glm-4.7" "qwen3-coder-next")
     local is_valid=false
 
     for m in "${valid_models[@]}"; do

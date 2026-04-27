@@ -5,3 +5,6 @@ sh/_local.gitconfig
 
 # Tags index
 tags
+
+# macOS
+.DS_Store

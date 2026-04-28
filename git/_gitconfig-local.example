@@ -13,8 +13,12 @@
 
 # 按仓库地址区分用户身份（可选，灵活性高）
 # 例如公司 GitLab 用公司邮箱，其他用个人邮箱
-#[includeIf "hasconfig:remote.*.url:**YOUR_COMPANY_GIT_URL/**"]
-#	path = ~/.gitconfig-company
+# 匹配公司 GitLab 的 HTTP/HTTPS 仓库
+#[includeIf "hasconfig:remote.*.url:http*://YOUR_COMPANY_GIT_URL/**"]
+#    path = ~/.gitconfig-company
+# 匹配公司 GitLab 的 SSH 仓库
+#[includeIf "hasconfig:remote.*.url:git@YOUR_COMPANY_GIT_URL:**/**"]
+#    path = ~/.gitconfig-company
 
 # GitHub 代理（可选）
 #[url "https://gh-proxy.org/https://github.com/"]

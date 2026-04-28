@@ -145,8 +145,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # bun completions
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
-# CoPaw
-export PATH="$HOME/.copaw/bin:$PATH"
 
 # dotfiles 目录 (相对路径定位基础)
 export DOTFILES_DIR="${DOTFILES_DIR:-$(cd "$(dirname "$(readlink -f ~/.zshrc)")/.." && pwd)}"

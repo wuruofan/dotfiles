@@ -25,9 +25,9 @@
 
 ### 本地文件
 
-本地文件参考 `sh/` 目录下的 `.example` 文件：
-- `sh/_secrets.config.example` → `~/.secrets.config`
-- `sh/_local.zshrc.example` → `~/.local.zshrc`
+本地文件参考 `examples/` 目录下的 `.example` 文件：
+- `examples/_secrets.config.example` → `~/.secrets.config`
+- `examples/_local.zshrc.example` → `~/.local.zshrc`
 - `git/_local.gitconfig.example` → `~/.local.gitconfig`
 
 ### zshrc 特性
@@ -52,11 +52,11 @@ cd ~/devkits/dotfiles
 
 ```bash
 # 1. 配置 API keys
-cp sh/_secrets.config.example ~/.secrets.config
+cp examples/_secrets.config.example ~/.secrets.config
 vim ~/.secrets.config  # 填入实际 key
 
 # 2. 配置本地私密配置（可选）
-cp sh/_local.zshrc.example ~/.local.zshrc
+cp examples/_local.zshrc.example ~/.local.zshrc
 vim ~/.local.zshrc  # 按需修改
 
 # 3. 配置本地 git 配置
@@ -126,7 +126,7 @@ git pull
 
 ```bash
 # 运行安装脚本（需要 npx）
-~/devkits/dotfiles/claude/link_skills.sh
+~/devkits/dotfiles/claude/install_skills.sh
 # 或手动
 npx skills add wuruofan/agent-skills -g -y
 ```
@@ -195,7 +195,7 @@ dotfiles/
 │   ├── _gitconfig       # git 全局配置
 │   ├── _local.gitconfig.example  # 本地配置参考
 │   └── _git-completion.bash
-├── sh/
+├── examples/
 │   ├── _secrets.config.example
 │   └── _local.zshrc.example
 ├── vim/
@@ -211,8 +211,8 @@ dotfiles/
 └── claude/
     ├── AGENTS.md        # 全局 AI 编码提案-批准协议模板（强约束版）
     ├── link_agents_md.sh  # AGENTS.md 软链接脚本（支持多目标选择）
-    ├── link_skills.sh     # npx skills 安装脚本
-    ├── settings.json
+    ├── install_skills.sh  # skills 安装脚本
+    ├── _claude_settings.json  # Claude Code 设置（示例配置）
     ├── statusline.sh
     └── claude-code.shrc  # Claude Code 全局配置（API keys、claude 函数等）
 ```

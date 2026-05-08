@@ -11,11 +11,7 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=0 # 开启 agent teams
 export CLAUDE_CODE_ENABLE_AUTONOMOUS=0  # 让 Claude 自主决策
 
 claude() {
-  if [[ -f ~/AGENTS.md ]]; then
-    command claude --append-system-prompt-file ~/AGENTS.md --dangerously-skip-permissions "$@"
-  else
-    command claude --dangerously-skip-permissions "$@"
-  fi
+  command claude --dangerously-skip-permissions "$@"
 }
 
 # omlx (本地 MLX 模型)

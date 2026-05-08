@@ -1,10 +1,5 @@
-# Secrets - never commit
-sh/secrets.config
-sh/_local.zshrc
-sh/_local.gitconfig
-
-# Tags index
-tags
-
 # macOS
 .DS_Store
+
+# backup
+backup/

@@ -7,8 +7,8 @@
 # claude code
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 export CLAUDE_CODE_ATTRIBUTION_HEADER=0 # 避免 kv 失效
-export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 # 开启 agent teams
-export CLAUDE_CODE_ENABLE_AUTONOMOUS=1  # 让 Claude 自主决策
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=0 # 开启 agent teams
+export CLAUDE_CODE_ENABLE_AUTONOMOUS=0  # 让 Claude 自主决策
 
 claude() {
   if [[ -f ~/AGENTS.md ]]; then
@@ -27,6 +27,7 @@ alias claude-omlx-9b="ANTHROPIC_BASE_URL='http://127.0.0.1:18000' ANTHROPIC_AUTH
 # alias claude-mimo='ANTHROPIC_BASE_URL=https://api.xiaomimimo.com/anthropic ANTHROPIC_AUTH_TOKEN=$MIMO_API_KEY ANTHROPIC_MODEL=mimo-v2-pro ANTHROPIC_SMALL_FAST_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_SONNET_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_OPUS_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_HAIKU_MODEL=mimo-v2-pro API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude'
 
 # MiniMax-M2.7
+if [[ -n "$MINIMAX_API_KEY" ]]; then
 function claude-minimax-27 {
   ANTHROPIC_BASE_URL='https://api.minimaxi.com/anthropic' \
   ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY" \
@@ -39,8 +40,28 @@ function claude-minimax-27 {
   CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
   claude "$@"
 }
+fi
+
+# DeepSeek V4
+if [[ -n "$DEEPSEEK_API_KEY" ]]; then
+function claude-ds-v4 {
+  ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' \
+  ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_API_KEY" \
+  ANTHROPIC_MODEL='deepseek-v4-pro' \
+  ANTHROPIC_SMALL_FAST_MODEL='deepseek-v4-flash' \
+  ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-pro' \
+  ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro' \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' \
+  CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash' \
+  CLAUDE_CODE_EFFORT_LEVEL='max' \
+  API_TIMEOUT_MS=3000000 \
+  CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
+  claude "$@"
+}
+fi
 
 # claude-qwen
+if [[ -n "$BAILIAN_API_TOKEN" ]]; then
 function claude-qwen {
     local model="${1:-kimi-k2.5}"
 
@@ -76,3 +97,4 @@ function claude-qwen {
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
     claude "$@"
 }
+fi

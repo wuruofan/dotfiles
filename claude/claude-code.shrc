@@ -28,62 +28,62 @@ alias claude-omlx-9b="ANTHROPIC_BASE_URL='http://127.0.0.1:18000' ANTHROPIC_AUTH
 
 # MiniMax-M2.7
 if [[ -n "$MINIMAX_API_KEY" ]]; then
-function claude-minimax-27 {
-  ANTHROPIC_BASE_URL='https://api.minimaxi.com/anthropic' \
-  ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY" \
-  ANTHROPIC_MODEL='MiniMax-M2.7' \
-  ANTHROPIC_SMALL_FAST_MODEL='MiniMax-M2.7' \
-  ANTHROPIC_DEFAULT_SONNET_MODEL='MiniMax-M2.7' \
-  ANTHROPIC_DEFAULT_OPUS_MODEL='MiniMax-M2.7' \
-  ANTHROPIC_DEFAULT_HAIKU_MODEL='MiniMax-M2.7' \
-  API_TIMEOUT_MS=3000000 \
-  CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
-  claude "$@"
-}
+  function claude-minimax-27 {
+    ANTHROPIC_BASE_URL='https://api.minimaxi.com/anthropic' \
+    ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY" \
+    ANTHROPIC_MODEL='MiniMax-M2.7' \
+    ANTHROPIC_SMALL_FAST_MODEL='MiniMax-M2.7' \
+    ANTHROPIC_DEFAULT_SONNET_MODEL='MiniMax-M2.7' \
+    ANTHROPIC_DEFAULT_OPUS_MODEL='MiniMax-M2.7' \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL='MiniMax-M2.7' \
+    API_TIMEOUT_MS=3000000 \
+    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
+    claude "$@"
+  }
 fi
 
 # DeepSeek V4
 if [[ -n "$DEEPSEEK_API_KEY" ]]; then
-function claude-ds-v4 {
-  ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' \
-  ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_API_KEY" \
-  ANTHROPIC_MODEL='deepseek-v4-pro' \
-  ANTHROPIC_SMALL_FAST_MODEL='deepseek-v4-flash' \
-  ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-pro' \
-  ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro' \
-  ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' \
-  CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash' \
-  CLAUDE_CODE_EFFORT_LEVEL='max' \
-  API_TIMEOUT_MS=3000000 \
-  CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
-  claude "$@"
-}
+  function claude-ds-v4 {
+    ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' \
+    ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_API_KEY" \
+    ANTHROPIC_MODEL='deepseek-v4-pro' \
+    ANTHROPIC_SMALL_FAST_MODEL='deepseek-v4-flash' \
+    ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-pro' \
+    ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro' \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' \
+    CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash' \
+    CLAUDE_CODE_EFFORT_LEVEL='max' \
+    API_TIMEOUT_MS=3000000 \
+    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
+    claude "$@"
+  }
 fi
 
 # claude-qwen
 if [[ -n "$BAILIAN_API_TOKEN" ]]; then
-function claude-qwen {
+  function claude-qwen {
     local model="${1:-kimi-k2.5}"
 
     local valid_models=("MiniMax-M2.5" "kimi-k2.5" "glm-5" "qwen3.5-plus" "qwen3.6-plus" "glm-4.7" "qwen3-coder-next")
     local is_valid=false
 
     for m in "${valid_models[@]}"; do
-        if [[ "$model" == "$m" ]]; then
-            is_valid=true
-            break
-        fi
+      if [[ "$model" == "$m" ]]; then
+        is_valid=true
+        break
+      fi
     done
 
     if [[ "$is_valid" == false ]]; then
-        echo "错误: 不支持的模型 '$model'"
-        echo "支持的模型: ${valid_models[*]}"
-        return 1
+      echo "错误: 不支持的模型 '$model'"
+      echo "支持的模型: ${valid_models[*]}"
+      return 1
     fi
 
     # 只有在有参数时才 shift
     if [[ $# -gt 0 ]]; then
-        shift
+      shift
     fi
 
     ANTHROPIC_BASE_URL="https://coding.dashscope.aliyuncs.com/apps/anthropic" \
@@ -96,5 +96,5 @@ function claude-qwen {
     API_TIMEOUT_MS="3000000" \
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
     claude "$@"
-}
+  }
 fi

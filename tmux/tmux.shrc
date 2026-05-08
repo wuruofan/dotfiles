@@ -9,38 +9,38 @@ _tmux_cc_find_name() {
 }
 
 if [[ -n "$MINIMAX_API_KEY" ]]; then
-tmux-cc-m27() {
-  if ! command -v tmux >/dev/null 2>&1; then
-    echo "tmux 未安装"
-    return 1
-  fi
-  local name="$(_tmux_cc_find_name "m27")"
-  tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-minimax-27"
-  tmux attach -t "$name"
-}
+  tmux-cc-m27() {
+    if ! command -v tmux >/dev/null 2>&1; then
+      echo "tmux 未安装"
+      return 1
+    fi
+    local name="$(_tmux_cc_find_name "m27")"
+    tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-minimax-27"
+    tmux attach -t "$name"
+  }
 fi
 
 if [[ -n "$BAILIAN_API_TOKEN" ]]; then
-tmux-cc-qwen() {
-  if ! command -v tmux >/dev/null 2>&1; then
-    echo "tmux 未安装"
-    return 1
-  fi
-  local name="$(_tmux_cc_find_name "qwen")"
-  local model="${1:-kimi-k2.5}"
-  tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-qwen $model"
-  tmux attach -t "$name"
-}
+  tmux-cc-qwen() {
+    if ! command -v tmux >/dev/null 2>&1; then
+      echo "tmux 未安装"
+      return 1
+    fi
+    local name="$(_tmux_cc_find_name "qwen")"
+    local model="${1:-kimi-k2.5}"
+    tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-qwen $model"
+    tmux attach -t "$name"
+  }
 fi
 
 if [[ -n "$DEEPSEEK_API_KEY" ]]; then
-tmux-cc-ds() {
-  if ! command -v tmux >/dev/null 2>&1; then
-    echo "tmux 未安装"
-    return 1
-  fi
-  local name="$(_tmux_cc_find_name "ds")"
-  tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-ds-v4"
-  tmux attach -t "$name"
-}
+  tmux-cc-ds() {
+    if ! command -v tmux >/dev/null 2>&1; then
+      echo "tmux 未安装"
+      return 1
+    fi
+    local name="$(_tmux_cc_find_name "ds")"
+    tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-ds-v4"
+    tmux attach -t "$name"
+  }
 fi

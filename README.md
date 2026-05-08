@@ -81,32 +81,38 @@ git pull
 
 ### @claude/AGENTS.md + link_agents_md.sh
 
-全局 AI 编码审计协议模板，兼容 Claude Code 和 OpenCode。在项目根目录创建 `AGENTS.md` 软链接后，Agent 会在每次代码修改前自动激活审计矩阵。
+全局 AI 编码提案-批准协议（强约束版），兼容 Claude Code 和 OpenCode。创建 `AGENTS.md` 软链接后，Agent 会在每次代码修改前先提案，获得批准后再执行。
 
 **文件说明：**
 
-- `AGENTS.md` - 协议模板
-- `link_agents_md.sh` - 快速创建软链接的脚本（在当前项目根目录创建 `AGENTS.md` → `~/AGENTS.md`）
+- `AGENTS.md` - 提案-批准协议模板（强约束版）
+- `link_agents_md.sh` - 快速创建软链接的脚本
 
 **配置方法：**
 
 ```bash
-# 1. 在 ~/.zshrc 中已配置 claude 函数自动加载 AGENTS.md
-#    （仅在 ~/AGENTS.md 存在时生效，两台电脑共享 dotfiles 时无副作用）
-
-# 2. 在项目目录中创建软链接
-cd ~/path-to-project
+# 运行链接脚本，选择目标位置
 ~/devkits/dotfiles/claude/link_agents_md.sh
-
-# 或手动创建
-ln -sf ~/AGENTS.md ./AGENTS.md
 ```
 
-**协议内容：**
+**脚本功能：**
 
-- **第一阶段**：逻辑审计矩阵（Pre-flight Check）- 修改代码前必须输出审计表格
-- **第二阶段**：确定性交付（Verified Delivery）- 修改后验证逻辑正确性
-- **行为禁令**：禁止自信提交、局部失明、重构式修复
+- 支持三个选项：
+  1. `~/AGENTS.md`
+  2. `~/.claude/CLAUDE.md`
+  3. 两个都创建
+- 自动检测目标是否已链接到源文件，避免重复操作
+- 目标存在时提示"是否覆盖（自动备份）?"，备份文件带时间戳
+- 创建链接后自动验证
+
+**协议核心：**
+
+- **核心铁律**：权限无效（ bypass 权限视同没有）、回合分离（提案与执行严格分离）
+- **回合 A**：仅提案，输出文件摘要、审计清单、diff 预览，等待批准
+- **回合 B**：仅在用户回复"同意"时才执行，且操作必须与提案 diff 完全一致
+- **审计清单**：改动范围确认（7项）+ 工程原则（3项）
+- **工程底线**：手术刀原则、简单至上、目标驱动验证
+- **绝对禁止**：清空文件写入、删除未声明的配置、跳过提案或审计清单、不验证就声称"修复好了"、猜测业务逻辑
 
 ---
 
@@ -203,8 +209,8 @@ dotfiles/
 │   ├── _tmux.conf        # tmux 配置
 │   └── tmux.shrc        # tmux 函数（自动找空位创建 session）
 └── claude/
-    ├── AGENTS.md        # 全局 AI 编码审计协议模板
-    ├── link_agents_md.sh  # 项目 AGENTS.md 软链接脚本
+    ├── AGENTS.md        # 全局 AI 编码提案-批准协议模板（强约束版）
+    ├── link_agents_md.sh  # AGENTS.md 软链接脚本（支持多目标选择）
     ├── link_skills.sh     # npx skills 安装脚本
     ├── settings.json
     ├── statusline.sh

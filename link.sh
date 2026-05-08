@@ -14,7 +14,7 @@ backup_or_overwrite() {
   local name="$3"
 
   if [[ -e "$dst" || -L "$dst" ]]; then
-    echo -n "$name ($dst) 已存在，是否覆盖? [y/N] "
+    echo -n "$name ($dst) 已存在，是否覆盖（自动备份）? [y/N] "
     read -r answer
     if [[ "$answer" =~ ^[Yy]$ ]]; then
       local backup="${dst}.backup_$(date +%Y%m%d%H%M%S)"

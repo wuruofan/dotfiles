@@ -56,6 +56,23 @@ if [[ -n "$DEEPSEEK_API_KEY" ]]; then
   }
 fi
 
+# DeepSeek V4 Flash (all models use flash)
+if [[ -n "$DEEPSEEK_API_KEY" ]]; then
+  function claude-ds-flash {
+    ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' \
+    ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_API_KEY" \
+    ANTHROPIC_MODEL='deepseek-v4-flash' \
+    ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash' \
+    ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-flash' \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' \
+    CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash' \
+    CLAUDE_CODE_EFFORT_LEVEL='max' \
+    API_TIMEOUT_MS=3000000 \
+    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
+    claude "$@"
+  }
+fi
+
 # claude-qwen
 if [[ -n "$BAILIAN_API_KEY" ]]; then
   function claude-qwen {

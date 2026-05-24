@@ -44,3 +44,15 @@ if [[ -n "$DEEPSEEK_API_KEY" ]]; then
     tmux attach -t "$name"
   }
 fi
+
+if [[ -n "$DEEPSEEK_API_KEY" ]]; then
+  tmux-cc-ds-flash() {
+    if ! command -v tmux >/dev/null 2>&1; then
+      echo "tmux 未安装"
+      return 1
+    fi
+    local name="$(_tmux_cc_find_name "ds-flash")"
+    tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-ds-flash"
+    tmux attach -t "$name"
+  }
+fi

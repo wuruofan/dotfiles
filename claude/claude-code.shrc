@@ -39,6 +39,23 @@ if [[ -n "$MINIMAX_API_KEY" ]]; then
   }
 fi
 
+# MiniMax-M3
+if [[ -n "$MINIMAX_API_KEY" ]]; then
+  function claude-minimax-3 {
+    ANTHROPIC_BASE_URL='https://api.minimaxi.com/anthropic' \
+    ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY" \
+    ANTHROPIC_MODEL='MiniMax-M3[1m]' \
+    ANTHROPIC_SMALL_FAST_MODEL='MiniMax-M3[1m]' \
+    ANTHROPIC_DEFAULT_SONNET_MODEL='MiniMax-M3[1m]' \
+    ANTHROPIC_DEFAULT_OPUS_MODEL='MiniMax-M3[1m]' \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL='MiniMax-M3[1m]' \
+    CLAUDE_CODE_EFFORT_LEVEL='max' \
+    API_TIMEOUT_MS=3000000 \
+    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
+    claude "$@"
+  }
+fi
+
 # DeepSeek V4
 if [[ -n "$DEEPSEEK_API_KEY" ]]; then
   function claude-ds-v4 {

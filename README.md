@@ -7,8 +7,8 @@
 | 文件 | 作用 | 同步策略 |
 |------|------|---------|
 | `zsh/_zshrc` | 跨机器通用配置（PATH、alias、函数等） | 提交 git |
-| `~/.gitconfig` | 跨机器通用 git 配置 | 提交 git |
-| `~/.local.gitconfig` | 本地 git 配置（hooksPath、gitlab token、github 代理、按仓库区分用户身份等） | 本地管理，不提交 |
+| `~/.gitconfig` | git 主配置（用户身份 + include 通用/本地配置） | 本地生成，不提交 |
+| `~/.gitconfig-local` | 本地 git 覆盖配置（includeIf 公司邮箱、GitHub 代理等） | 本地管理，不提交 |
 | `~/.secrets.config` | API keys（MINIMAX_API_KEY 等） | 本地管理，不提交 |
 | `~/.local.zshrc` | 本地私密配置（nexus token、路径等） | 本地管理，不提交 |
 
@@ -23,12 +23,27 @@
   └── ~/.local/bin/env
 ```
 
+### Git 配置加载顺序
+
+```
+~/.gitconfig（生成文件，非符号链接）
+  ├── [user]                ← 用户身份（sandboxed 工具也能读到）
+  ├── [include] _gitconfig-shared  ← 通用配置（aliases, core, pull, etc.）
+  ├── [include] ~/.gitconfig-local  ← 本地覆盖
+  └── [safe]
+        └── ~/.gitconfig-local
+              └── [includeIf] ~/.gitconfig-company  ← 公司仓库覆盖（按 remote URL 匹配）
+```
+
+> **为什么 `~/.gitconfig` 不是符号链接？** 某些 sandboxed 工具（如 claude CLI）可能跳过 `[include]` 指令，
+> 导致 `[user]` 身份丢失，git 会 fallback 到 `用户名@主机名`。将 `[user]` 放在主文件中可避免此问题。
+
 ### 本地文件
 
 本地文件参考 `examples/` 目录下的 `.example` 文件：
 - `examples/_secrets.config.example` → `~/.secrets.config`
 - `examples/_local.zshrc.example` → `~/.local.zshrc`
-- `git/_local.gitconfig.example` → `~/.local.gitconfig`
+- `git/_gitconfig-local.example` → `~/.gitconfig-local`
 
 ### zshrc 特性
 
@@ -59,9 +74,9 @@ vim ~/.secrets.config  # 填入实际 key
 cp examples/_local.zshrc.example ~/.local.zshrc
 vim ~/.local.zshrc  # 按需修改
 
-# 3. 配置本地 git 配置
-cp git/_local.gitconfig.example ~/.local.gitconfig
-vim ~/.local.gitconfig  # 填入实际值
+# 3. 配置本地 git 覆盖配置（可选）
+cp git/_gitconfig-local.example ~/.gitconfig-local
+vim ~/.gitconfig-local  # 按需修改（includeIf 公司邮箱、GitHub 代理等）
 
 # 4. 安装 vim 插件
 vim +PlugInstall +qa
@@ -74,6 +89,9 @@ cd ~/devkits/dotfiles
 git pull
 ./link.sh
 ```
+
+> **升级说明**：v0.5.0 起 `~/.gitconfig` 从符号链接改为生成文件。`link.sh` 会自动检测旧符号链接并迁移，
+> 从 `~/.gitconfig-local` 读取旧的 `[user]` 身份作为默认值。迁移后建议移除 `~/.gitconfig-local` 中的 `[user]` 段。
 
 ---
 
@@ -192,8 +210,8 @@ dotfiles/
 ├── .gitignore
 ├── link.sh              # 软链脚本
 ├── git/
-│   ├── _gitconfig       # git 全局配置
-│   ├── _local.gitconfig.example  # 本地配置参考
+│   ├── _gitconfig-shared  # git 通用配置片段（aliases, core, etc.）
+│   ├── _gitconfig-local.example  # 本地覆盖配置参考
 │   └── _git-completion.bash
 ├── examples/
 │   ├── _secrets.config.example

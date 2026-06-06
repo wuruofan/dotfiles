@@ -25,11 +25,3 @@
 	rebase = true
 [init]
 	defaultBranch = main
-
-# =============================================
-# Local config (not in git)
-# =============================================
-[include]
-	path = ~/.gitconfig-local
-[safe]
-	directory = *

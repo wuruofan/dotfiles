@@ -52,7 +52,57 @@ create_link "$PWD/vim/nvim/init.vim" ~/.config/nvim/init.vim
 # git
 mkdir -p ~/.oh-my-zsh/custom/themes/
 backup_or_overwrite "$PWD/git/_git-completion.bash" ~/.git-completion.bash "git completion" && create_link "$PWD/git/_git-completion.bash" ~/.git-completion.bash
-backup_or_overwrite "$PWD/git/_gitconfig" ~/.gitconfig "gitconfig" && create_link "$PWD/git/_gitconfig" ~/.gitconfig
+
+# gitconfig — generate as real file (not symlink) so [user] is always readable
+# Upgrade note: old setup used symlink to _gitconfig (now renamed _gitconfig-shared).
+# After git pull, the symlink may break. We try to read user identity from:
+# 1. Current git config (works if symlink is still valid)
+# 2. ~/.gitconfig-local (old setup had [user] there)
+# 3. Fallback to empty
+CURRENT_NAME=""
+CURRENT_EMAIL=""
+if [[ -e ~/.gitconfig ]]; then
+  # Valid file or valid symlink — read from git config
+  CURRENT_NAME=$(git config --global user.name 2>/dev/null || echo "")
+  CURRENT_EMAIL=$(git config --global user.email 2>/dev/null || echo "")
+fi
+if [[ -z "$CURRENT_NAME" && -f ~/.gitconfig-local ]]; then
+  # Broken symlink or no name — try reading from gitconfig-local (old setup)
+  CURRENT_NAME=$(git config -f ~/.gitconfig-local user.name 2>/dev/null || echo "")
+  CURRENT_EMAIL=$(git config -f ~/.gitconfig-local user.email 2>/dev/null || echo "")
+fi
+
+echo ""
+echo "--- 配置 git 用户身份 ---"
+echo -n "Git user.name [${CURRENT_NAME:-YOUR_NAME}]: "
+read -r git_name
+git_name="${git_name:-${CURRENT_NAME:-YOUR_NAME}}"
+
+echo -n "Git user.email [${CURRENT_EMAIL:-YOUR_EMAIL}]: "
+read -r git_email
+git_email="${git_email:-${CURRENT_EMAIL:-YOUR_EMAIL}}"
+
+if backup_or_overwrite "generated" ~/.gitconfig "gitconfig"; then
+  cat > ~/.gitconfig << GITCONFIG
+[user]
+	name = ${git_name}
+	email = ${git_email}
+
+[include]
+	path = ${PWD}/git/_gitconfig-shared
+
+[include]
+	path = ~/.gitconfig-local
+
+[safe]
+	directory = *
+GITCONFIG
+  echo "  已生成 ~/.gitconfig (name=${git_name}, email=${git_email})"
+  # Migration: if ~/.gitconfig-local still has [user] section, suggest removing it
+  if [[ -f ~/.gitconfig-local ]] && grep -q '^\[user\]' ~/.gitconfig-local 2>/dev/null; then
+    echo "  ⚠️  ~/.gitconfig-local 仍包含 [user] 段，建议移除（身份已在 ~/.gitconfig 主文件中定义）"
+  fi
+fi
 
 # zsh
 backup_or_overwrite "$PWD/zsh/_zshrc" ~/.zshrc "zshrc" && create_link "$PWD/zsh/_zshrc" ~/.zshrc
@@ -74,6 +124,6 @@ echo ""
 echo "2. ~/.local.zshrc - 本地私密配置"
 echo "   参考 examples/_local.zshrc.example"
 echo ""
-echo "3. ~/.local.gitconfig - 本地 git 配置"
-echo "   参考 git/_local.gitconfig.example"
+echo "3. ~/.gitconfig-local - 本地 git 覆盖配置（includeIf 公司邮箱、GitHub 代理等）"
+echo "   参考 git/_gitconfig-local.example"
 echo "=========================================="

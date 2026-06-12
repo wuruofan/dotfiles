@@ -12,6 +12,7 @@
 	ss = stash
 	dt = difftool
 	cp = cherry-pick
+	syncup = !f() { git fetch upstream && git switch main && git merge --ff-only upstream/main && git push origin main; }; f
 [merge]
 	tool = vim -d
 [diff]

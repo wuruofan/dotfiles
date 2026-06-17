@@ -190,16 +190,16 @@ tmux 配置和封装函数，通过 `DOTFILES_DIR` 相对路径加载。
 tmux source-file ~/.tmux.conf
 
 # tmux 封装函数（zshrc 中已 source，需对应 API key 存在才定义）
-tmux-cc-m27      # 创建 MiniMax-M2.7 Claude session（需 MINIMAX_API_KEY）
-tmux-cc-qwen     # 创建 Qwen/Dashscope Claude session（需 BAILIAN_API_TOKEN）
-tmux-cc-ds       # 创建 DeepSeek V4 Claude session（需 DEEPSEEK_API_KEY）
+tmux-cc-m3        # 创建 MiniMax-M3 Claude session（需 MINIMAX_API_KEY）
+tmux-cc-ds        # 创建 DeepSeek V4 Claude session（需 DEEPSEEK_API_KEY）
+tmux-cc-ds-flash  # 创建 DeepSeek V4 Flash Claude session（需 DEEPSEEK_API_KEY）
 ```
 
 **功能：**
 
-- `tmux-cc-m27` - 在空闲的 m27_N session 中启动 MiniMax-M2.7
-- `tmux-cc-qwen [model]` - 在空闲的 qwen_N session 中启动，支持 model 参数
+- `tmux-cc-m3` - 在空闲的 m3_N session 中启动 MiniMax-M3
 - `tmux-cc-ds` - 在空闲的 ds_N session 中启动 DeepSeek V4
+- `tmux-cc-ds-flash` - 在空闲的 ds-flash_N session 中启动 DeepSeek V4 Flash
 - 自动查找空闲 session 名称，避免冲突
 
 ---

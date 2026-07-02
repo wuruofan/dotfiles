@@ -43,3 +43,23 @@ if [[ -n "$DEEPSEEK_API_KEY" ]]; then
     tmux attach -t "$name"
   }
 fi
+
+# 走 cc-switch 启用的默认 Claude 入口：
+#   - API key / 模型 / Base URL 由 cc-switch 写入 ~/.claude/settings.json，
+#     claude 二进制启动时自动读取，无需 source claude-code.shrc 注入 env。
+#   - 一旦启用 cc-switch，claude 二进制读取 env 的顺序以
+#     ~/.claude/settings.json 为准，会覆盖本仓库在 claude-code.shrc
+#     里设的 ANTHROPIC_* 变量；上面那些 tmux-cc-m3 / tmux-cc-ds /
+#     tmux-cc-ds-flash wrapper 里的 env（ANTHROPIC_BASE_URL、
+#     ANTHROPIC_AUTH_TOKEN、CLAUDE_CODE_SUBAGENT_MODEL 等）会被
+#     cc-switch 强制改写而失效，因此 cc-switch 场景下应统一改用
+#     tmux-claude，并在 cc-switch 里选择具体 provider。
+tmux-claude() {
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo "tmux 未安装"
+    return 1
+  fi
+  local name="$(_tmux_cc_find_name "cc")"
+  tmux new-session -s "$name" -d "claude --dangerously-skip-permissions"
+  tmux attach -t "$name"
+}

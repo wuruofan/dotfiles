@@ -117,19 +117,46 @@ zstyle ':completion:*' completer _complete _prefix _correct _prefix _match _appr
 # NVM - Direct load (required for claude)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# =============================================
+# System (pkg) Node / npm — independent of nvm
+# =============================================
+# 日常 node/npm 仍走 nvm（见下方 NVM 加载）。但 openclaw、以及任何需要装进
+# /usr/local/lib/node_modules 的东西，必须用 pkg node (/usr/local/bin)。
+#
+# ⚠️ 关键保险：必须 env -u NPM_CONFIG_PREFIX。
+# 该变量是迁移时留下的隐形陷阱（见 openclaw-node-migration-blog.md 坑 1）：
+# 一旦残留，会把 npm -g 钉死在 nvm 目录，和用哪个 node 二进制无关。
+# 即使现在 .zshrc 已删掉它，这里仍显式中和，杜绝将来任何环境复现。
+sysnode() {
+  env -u NPM_CONFIG_PREFIX PATH="/usr/local/bin:$PATH" /usr/local/bin/node "$@"
+}
+sysnpm() {
+  env -u NPM_CONFIG_PREFIX PATH="/usr/local/bin:$PATH" /usr/local/bin/npm "$@"
+}
+
+# openclaw - run via system (pkg) node at /usr/local/bin, independent of nvm.
+# nvm stays as the daily driver for development; openclaw (gateway + CLI)
+# uses the pkg-installed node so launchd paths stay stable.
+openclaw() {
+  env -u NPM_CONFIG_PREFIX PATH="/usr/local/bin:$PATH" /usr/local/bin/openclaw "$@"
+}
+
+# OpenClaw Completion
+[ -f "/Users/meow/.openclaw/completions/openclaw.zsh" ] && source "/Users/meow/.openclaw/completions/openclaw.zsh"
+
+# NVM Completion
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 export SCRCPY_SERVER_PATH=/Applications/极空间.app/Contents/Resources/app.asar.unpacked/bin/platform-tools/scrcpy-server
 export PATH=$PATH:/Applications/极空间.app/Contents/Resources/app.asar.unpacked/bin/platform-tools
 
-# Homebrew 腾讯镜像
-export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.cloud.tencent.com/homebrew/brew.git"
-export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.cloud.tencent.com/homebrew/homebrew-core.git"
-export HOMEBREW_API_DOMAIN="https://mirrors.cloud.tencent.com/homebrew-bottles/api"
-export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.cloud.tencent.com/homebrew-bottles"
-
-# 可选：Homebrew Cask & Services（如果你手动添加过这些 tap）
-export HOMEBREW_CASK_GIT_REMOTE="https://mirrors.cloud.tencent.com/homebrew/homebrew-cask.git"
+# Homebrew 中科大镜像
+export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
+export HOMEBREW_CASK_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-cask.git"
 
 # flutter
 export PUB_HOSTED_URL=https://pub.flutter-io.cn
@@ -194,7 +221,7 @@ export PYTHON_CONFIGURE_OPTS="--with-openssl=$(brew --prefix openssl) --enable-f
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 
-# pyenv-install-fast
+# pyenv 工具函数（init 启用后直接可用）
 pyenv-install-fast() {
   local version=$1
   if [[ -z "$version" ]]; then

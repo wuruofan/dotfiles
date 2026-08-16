@@ -6,14 +6,14 @@
 call plug#begin('~/.vim/bundle')
 
 "vim 语法高亮
-Plug 'pboettch/vim-cmake-syntax'
-Plug 'octol/vim-cpp-enhanced-highlight'
+"Plug 'pboettch/vim-cmake-syntax'
+"Plug 'octol/vim-cpp-enhanced-highlight'
 
-"vim环境下运行交互命令
-Plug 'christoomey/vim-run-interactive'
+"vim环境下运行交互命令 (dev 专用，已禁用 2026-08-16)
+"Plug 'christoomey/vim-run-interactive'
 
-"vim cmake
-Plug 'vhdirk/vim-cmake'
+"vim cmake (cpp dev 专用，已禁用 2026-08-16)
+"Plug 'vhdirk/vim-cmake'
 
 "super-tab (removed: Neovim 0.11+ built-in completion)
 " Plug 'ervandew/supertab'
@@ -32,27 +32,27 @@ Plug 'Valloric/ListToggle'
 "Plug 'SirVer/ultisnips'
 "Plug 'honza/vim-snippets'
 
-" 作者信息
-Plug 'nine2/vim-copyright'
+" 作者信息 (dev 专用，已禁用 2026-08-16)
+"Plug 'nine2/vim-copyright'
 
 " 代码检查
 "Plug 'w0rp/ale'
 " 异步编译 代码检查
-Plug 'neomake/neomake'
+"Plug 'neomake/neomake'
 
 " Gtags (已禁用)
 " Plug 'ludovicchabant/vim-gutentags'
 "cscope在最新neovim已移除，改为使用LSP
 "https://github.com/skywind3000/gutentags_plus/issues/48#issuecomment-1403119827
 "Plug 'skywind3000/gutentags_plus'
-Plug 'skywind3000/vim-preview'
+"Plug 'skywind3000/vim-preview'
 
-" tags导航栏
-Plug 'majutsushi/tagbar'
+" tags导航栏 (dev 专用，已禁用 2026-08-16)
+"Plug 'majutsushi/tagbar'
 " 文件管理插件
 Plug 'scrooloose/nerdtree'
-" 文件管理插件
-Plug 'justinmk/vim-dirvish'
+" 文件管理插件（与 nerdtree 二选一，已禁用 2026-08-16）
+"Plug 'justinmk/vim-dirvish'
 
 
 " 符号成对匹配跳转，代替matchit
@@ -67,18 +67,13 @@ Plug 'tpope/vim-repeat'
 " v模式下快速选中区域
 Plug 'terryma/vim-expand-region'
 
-" 新增文本对象
-" 它新定义的文本对象主要有：
-" i, 和 a, ：参数对象，写代码一半在修改，现在可以用 di, / ci, 一次性删除/改写当前参数
-" ii 和 ai ：缩进对象，同一个缩进层次的代码，可以用 vii 选中，dii / cii 删除或改写
-" if 和 af ：函数对象，可以用 vif / dif / cif 来选中/删除/改写函数的内容
-" i' i" i< i[ i( i{ 修改成对符号内的内容
-Plug 'kana/vim-textobj-user'
-Plug 'kana/vim-textobj-entire'
-Plug 'kana/vim-textobj-indent'
-Plug 'kana/vim-textobj-syntax'
-Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
-Plug 'sgur/vim-textobj-parameter'
+" 新增文本对象（dev 专用，全量禁用 2026-08-16）
+"Plug 'kana/vim-textobj-user'
+"Plug 'kana/vim-textobj-entire'
+"Plug 'kana/vim-textobj-indent'
+"Plug 'kana/vim-textobj-syntax'
+"Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
+"Plug 'sgur/vim-textobj-parameter'
 
 " 历史记录
 Plug 'simnalamburt/vim-mundo'
@@ -92,16 +87,16 @@ Plug 'Yggdroot/LeaderF'
 Plug 'Lokaltog/vim-easymotion'
 " 书签
 Plug 'MattesGroeger/vim-bookmarks'
-" C头文件成对切换
-Plug 'vim-scripts/a.vim'
+" C头文件成对切换（cpp dev 专用，已禁用 2026-08-16）
+"Plug 'vim-scripts/a.vim'
 
 " 自动创建不存在的路径文件夹
 Plug 'pbrisbin/vim-mkdir'
 " 重命名buffer中文件名
 Plug 'danro/rename.vim'
 
-" 对齐插件
-Plug 'godlygeek/tabular'
+" 对齐插件（dev 专用，已禁用 2026-08-16）
+"Plug 'godlygeek/tabular'
 " 多行编辑插件
 Plug 'terryma/vim-multiple-cursors'
 " 注释插件
@@ -117,17 +112,17 @@ Plug 'mhinz/vim-grepper', { 'on': ['Grepper', '<plug>(GrepperOperator)'] }
 " 左侧栏提示修改状态
 Plug 'mhinz/vim-signify'
 
-" VIM配色方案
-Plug 'tomasr/molokai'
-Plug 'altercation/vim-colors-solarized'
-Plug 'croaky/vim-colors-github'
-Plug 'morhetz/gruvbox'
-Plug 'drewtempelmeyer/palenight.vim'
-Plug 'iCyMind/NeoSolarized'
-Plug 'joshdick/onedark.vim'
-Plug 'nanotech/jellybeans.vim'
-Plug 'rakr/vim-one'
-Plug 'hzchirs/vim-material'
+" VIM配色方案（精简 2026-08-16：留 onedark + gruvbox 备用）
+Plug 'joshdick/onedark.vim'    " 当前活跃配色
+Plug 'morhetz/gruvbox'           " 备用
+"Plug 'tomasr/molokai'
+"Plug 'altercation/vim-colors-solarized'
+"Plug 'croaky/vim-colors-github'
+"Plug 'drewtempelmeyer/palenight.vim'
+"Plug 'iCyMind/NeoSolarized'
+"Plug 'nanotech/jellybeans.vim'
+"Plug 'rakr/vim-one'
+"Plug 'hzchirs/vim-material'
 "Plug 'srcery-colors/srcery-vim'
 
 " 启动界面
@@ -141,8 +136,8 @@ Plug 'vim-airline/vim-airline-themes'
 " 状态栏git分支提示
 Plug 'tpope/vim-fugitive'
 
-" 自动格式化插件
-Plug 'Chiel92/vim-autoformat'
+" 自动格式化插件（dev 专用，已禁用 2026-08-16）
+"Plug 'Chiel92/vim-autoformat'
 "Plug 'sbdchd/neoformat'
 " 去处行尾空格
 Plug 'bronson/vim-trailing-whitespace'

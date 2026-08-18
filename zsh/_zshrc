@@ -1,6 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Dedup PATH: zsh's `path` array is kept in sync with `PATH`.
+# `typeset -U` keeps only the first occurrence, so re-sourcing .zshrc
+# (tmux panes, manual `source`, new tabs) won't accumulate duplicate entries.
+typeset -U path
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -238,7 +243,7 @@ pyenv-install-fast() {
 export DEVECO_HOME="/Applications/DevEco-Studio.app/Contents"
 export HARMONYOS_SDK="$DEVECO_HOME/sdk"
 export HM_TOOLSCHAINS="$HARMONYOS_SDK/default/openharmony/toolchains"
-export PATH="$PATH:$HOME/devkits/harmonyos/command-line-tools/bin:$HM_TOOLSCHAINS/"
+export PATH="$PATH:$HOME/devkits/harmonyos/command-line-tools/bin:$HM_TOOLSCHAINS"
 
 # jeb & apktool
 export PATH="$HOME/devkits/bin:$PATH"
@@ -259,3 +264,6 @@ export PATH="$HOME/llm/bin:$PATH"
 # uv 源 (清华镜像)
 export UV_DEFAULT_INDEX=https://pypi.tuna.tsinghua.edu.cn/simple
 export UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+
+# Added by MiniMax Code
+export PATH="/Users/wuruofan/.mavis/bin:$PATH"

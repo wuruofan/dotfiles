@@ -3,3 +3,6 @@
 
 # backup
 backup/
+
+# agent scratch
+.workbuddy/

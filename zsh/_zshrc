@@ -224,6 +224,10 @@ alias rm='trash'
 # pyenv (for YCM)
 export PYTHON_CONFIGURE_OPTS="--with-openssl=$(brew --prefix openssl) --enable-framework"
 export PATH="$HOME/.pyenv/bin:$PATH"
+# rehash 抢锁等待上限：pyenv 默认 60s。pyenv-rehash 用 shims/.pyenv-shim 当锁文件，
+# 该文件残留（rehash 被中断/SIGKILL）时锁永远拿不到，每次新开终端都要白等满 60s
+# 才报错。收紧到 5s，让故障快速暴露而不是把终端卡死一分钟。
+export PYENV_REHASH_TIMEOUT=5
 eval "$(pyenv init -)"
 
 # pyenv 工具函数（init 启用后直接可用）

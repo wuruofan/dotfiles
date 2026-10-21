@@ -15,7 +15,7 @@ if [[ -n "$MINIMAX_API_KEY" ]]; then
       return 1
     fi
     local name="$(_tmux_cc_find_name "m3")"
-    tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-minimax-3"
+    tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-minimax"
     tmux attach -t "$name"
   }
 fi
@@ -27,7 +27,7 @@ if [[ -n "$DEEPSEEK_API_KEY" ]]; then
       return 1
     fi
     local name="$(_tmux_cc_find_name "ds")"
-    tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-ds-v4"
+    tmux new-session -s "$name" -d "source \"\$CLAUDE_CONF_DIR/claude-code.shrc\" && claude-ds"
     tmux attach -t "$name"
   }
 fi

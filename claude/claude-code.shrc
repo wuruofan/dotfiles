@@ -22,16 +22,16 @@ alias claude-omlx-9b="ANTHROPIC_BASE_URL='http://127.0.0.1:18000' ANTHROPIC_AUTH
 # mimo v2 (暂时注释)
 # alias claude-mimo='ANTHROPIC_BASE_URL=https://api.xiaomimimo.com/anthropic ANTHROPIC_AUTH_TOKEN=$MIMO_API_KEY ANTHROPIC_MODEL=mimo-v2-pro ANTHROPIC_SMALL_FAST_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_SONNET_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_OPUS_MODEL=mimo-v2-pro ANTHROPIC_DEFAULT_HAIKU_MODEL=mimo-v2-pro API_TIMEOUT_MS=3000000 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 claude'
 
-# MiniMax-M3
+# MiniMax-M3.1-Flash
 if [[ -n "$MINIMAX_API_KEY" ]]; then
-  function claude-minimax-3 {
+  function claude-minimax {
     ANTHROPIC_BASE_URL='https://api.minimaxi.com/anthropic' \
     ANTHROPIC_AUTH_TOKEN="$MINIMAX_API_KEY" \
-    ANTHROPIC_MODEL='MiniMax-M3[1m]' \
-    ANTHROPIC_SMALL_FAST_MODEL='MiniMax-M3[1m]' \
-    ANTHROPIC_DEFAULT_SONNET_MODEL='MiniMax-M3[1m]' \
-    ANTHROPIC_DEFAULT_OPUS_MODEL='MiniMax-M3[1m]' \
-    ANTHROPIC_DEFAULT_HAIKU_MODEL='MiniMax-M3[1m]' \
+    ANTHROPIC_MODEL='MiniMax-M3.1-Flash[1m]' \
+    ANTHROPIC_SMALL_FAST_MODEL='MiniMax-M3.1-Flash[1m]' \
+    ANTHROPIC_DEFAULT_SONNET_MODEL='MiniMax-M3.1-Flash[1m]' \
+    ANTHROPIC_DEFAULT_OPUS_MODEL='MiniMax-M3.1-Flash[1m]' \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL='MiniMax-M3.1-Flash[1m]' \
     CLAUDE_CODE_AUTO_COMPACT_WINDOW=384000 \
     API_TIMEOUT_MS=3000000 \
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
@@ -39,16 +39,16 @@ if [[ -n "$MINIMAX_API_KEY" ]]; then
   }
 fi
 
-# DeepSeek V4
+# DeepSeek
 if [[ -n "$DEEPSEEK_API_KEY" ]]; then
-  function claude-ds-v4 {
+  function claude-ds {
     ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' \
     ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_API_KEY" \
-    ANTHROPIC_MODEL='deepseek-v4-pro[1m]' \
-    ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-pro[1m]' \
-    ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]' \
-    ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash[1m]' \
-    CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash[1m]' \
+    ANTHROPIC_MODEL='deepseek-flash[1m]' \
+    ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-flash[1m]' \
+    ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-flash[1m]' \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-flash[1m]' \
+    CLAUDE_CODE_SUBAGENT_MODEL='deepseek-flash[1m]' \
     CLAUDE_CODE_EFFORT_LEVEL='max' \
     CLAUDE_CODE_AUTO_COMPACT_WINDOW=384000 \
     API_TIMEOUT_MS=3000000 \
@@ -57,16 +57,16 @@ if [[ -n "$DEEPSEEK_API_KEY" ]]; then
   }
 fi
 
-# DeepSeek V4 Flash (all models use flash)
+# DeepSeek Flash
 if [[ -n "$DEEPSEEK_API_KEY" ]]; then
   function claude-ds-flash {
     ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' \
     ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_API_KEY" \
-    ANTHROPIC_MODEL='deepseek-v4-flash[1m]' \
-    ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash[1m]' \
-    ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-flash[1m]' \
-    ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash[1m]' \
-    CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash[1m]' \
+    ANTHROPIC_MODEL='deepseek-flash[1m]' \
+    ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-flash[1m]' \
+    ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-flash[1m]' \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-flash[1m]' \
+    CLAUDE_CODE_SUBAGENT_MODEL='deepseek-flash[1m]' \
     CLAUDE_CODE_EFFORT_LEVEL='max' \
     CLAUDE_CODE_AUTO_COMPACT_WINDOW=384000 \
     API_TIMEOUT_MS=3000000 \

@@ -133,22 +133,32 @@ export NVM_DIR="$HOME/.nvm"
 # 该变量是迁移时留下的隐形陷阱（见 openclaw-node-migration-blog.md 坑 1）：
 # 一旦残留，会把 npm -g 钉死在 nvm 目录，和用哪个 node 二进制无关。
 # 即使现在 .zshrc 已删掉它，这里仍显式中和，杜绝将来任何环境复现。
-sysnode() {
-  env -u NPM_CONFIG_PREFIX PATH="/usr/local/bin:$PATH" /usr/local/bin/node "$@"
-}
-sysnpm() {
-  env -u NPM_CONFIG_PREFIX PATH="/usr/local/bin:$PATH" /usr/local/bin/npm "$@"
-}
+#
+# ⚠️ 只在 pkg node 确实存在时才定义这些 wrapper。
+# pkg 版 Node (nodejs.org 的 .pkg 安装包) 装到 /usr/local，是隐式前置依赖：
+# 仓库里没有对应的安装脚本，纯 brew/nvm 的机器上它们只会是"执行即报错"的空壳
+# (env: /usr/local/bin/npm: No such file or directory)。
+# 条件定义让没装 pkg node 的机器保持干净，装了的机器行为完全不变。
+if [ -x /usr/local/bin/node ]; then
+  sysnode() {
+    env -u NPM_CONFIG_PREFIX PATH="/usr/local/bin:$PATH" /usr/local/bin/node "$@"
+  }
+  sysnpm() {
+    env -u NPM_CONFIG_PREFIX PATH="/usr/local/bin:$PATH" /usr/local/bin/npm "$@"
+  }
+fi
 
 # openclaw - run via system (pkg) node at /usr/local/bin, independent of nvm.
 # nvm stays as the daily driver for development; openclaw (gateway + CLI)
 # uses the pkg-installed node so launchd paths stay stable.
-openclaw() {
-  env -u NPM_CONFIG_PREFIX PATH="/usr/local/bin:$PATH" /usr/local/bin/openclaw "$@"
-}
+if [ -x /usr/local/bin/openclaw ]; then
+  openclaw() {
+    env -u NPM_CONFIG_PREFIX PATH="/usr/local/bin:$PATH" /usr/local/bin/openclaw "$@"
+  }
+fi
 
 # OpenClaw Completion
-[ -f "/Users/meow/.openclaw/completions/openclaw.zsh" ] && source "/Users/meow/.openclaw/completions/openclaw.zsh"
+# (实际加载见文件末尾 $HOME 版本；此处原本有一行写死 /Users/meow 的重复加载，已移除)
 
 # NVM Completion
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
